@@ -1,0 +1,29 @@
+.form-status-container{
+    background-color: rgb(248, 225, 228);
+    width: 1000px;
+    margin: 30px auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    padding: 20px 0;
+}
+.form-status-container h1{
+    padding: 30px 0px;
+}
+
+.display-data{
+    display: grid;
+    grid-template-columns: 400px 400px;
+    grid-gap: 10px 0;
+}
+
+.display-data b{
+    background-color: white;
+
+}
+.display-data p{
+    background-color: whitesmoke;
+
+}
