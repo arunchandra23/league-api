@@ -3,7 +3,9 @@ package com.woxsen.leagueapi.service;
 import com.woxsen.leagueapi.entity.Course;
 import com.woxsen.leagueapi.entity.Role;
 import com.woxsen.leagueapi.entity.User;
+import com.woxsen.leagueapi.exceptions.BadRequestException;
 import com.woxsen.leagueapi.exceptions.ResourceNotFoundException;
+import com.woxsen.leagueapi.payload.ApiResponse;
 import com.woxsen.leagueapi.payload.request.LoginRequest;
 import com.woxsen.leagueapi.payload.request.UserRequest;
 import com.woxsen.leagueapi.payload.response.LoginResponse;
@@ -12,7 +14,6 @@ import com.woxsen.leagueapi.repository.CourseRepository;
 import com.woxsen.leagueapi.repository.UserRepository;
 import com.woxsen.leagueapi.security.CustomUserDetailService;
 import com.woxsen.leagueapi.security.JwtService;
-import com.woxsen.leagueapi.utils.AppConstants;
 import com.woxsen.leagueapi.utils.RoleName;
 import com.woxsen.leagueapi.utils.Status;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +24,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Arrays;
 
@@ -44,8 +47,8 @@ public class AuthenticationService {
     private JwtService jwtService;
     @Autowired
     private PasswordEncoder passwordEncoder;
-    
-    private ModelMapper modelMapper=new ModelMapper();
+
+    private ModelMapper modelMapper = new ModelMapper();
 
 
     public LoginResponse login(LoginRequest loginRequest) {
@@ -64,10 +67,10 @@ public class AuthenticationService {
 
 
     public LoginResponse signUp(UserRequest userRequest) {
-        Course course=courseRepository.findById(userRequest.getCourseId()).orElseThrow(()-> {
+        Course course = courseRepository.findById(userRequest.getCourseId()).orElseThrow(() -> {
             throw new ResourceNotFoundException("Course not found with Id: " + userRequest.getCourseId());
         });
-        User user=modelMapper.map(userRequest,User.class);
+        User user = modelMapper.map(userRequest, User.class);
         user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
         user.setCourse(course);
         user.setBranch(course.getBranch());
@@ -82,4 +85,6 @@ public class AuthenticationService {
                 .build();
 
     }
+
+
 }

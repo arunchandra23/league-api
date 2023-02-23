@@ -5,6 +5,7 @@ import com.woxsen.leagueapi.exceptions.BadRequestException;
 import com.woxsen.leagueapi.repository.RoleRepository;
 import com.woxsen.leagueapi.repository.UserRepository;
 import com.woxsen.leagueapi.utils.RoleName;
+import com.woxsen.leagueapi.utils.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,17 +20,31 @@ public class RoleService {
 
     public List<Role> addRoles() {
 
-        if (roleRepository.count() == 3) throw new BadRequestException("Roles added already!");
-//        Role student = Role.builder()
-//                .name(RoleName.STUDENT)
-//                .build();
-//        Role admin = Role.builder()
-//                .name(RoleName.ADMIN)
-//                .build();
-//        Role dba = Role.builder()
-//                .name(RoleName.DBA)
-//                .build();
-        List<Role> roles = new ArrayList<>(Arrays.asList(new Role(RoleName.STUDENT),new Role(RoleName.DBA),new Role(RoleName.ADMIN),new Role(RoleName.FACULTY),new Role(RoleName.STAFF)));
+        if (roleRepository.count() >= 3) throw new BadRequestException("Roles added already!");
+        Role student = Role.builder()
+                .name(RoleName.STUDENT)
+                .activeIndex(Boolean.TRUE)
+                .status(Status.ACTIVE)
+                .build();
+        Role admin = Role.builder()
+                .name(RoleName.ADMIN)
+                .build();
+        Role dba = Role.builder()
+                .name(RoleName.DBA)
+                .activeIndex(Boolean.TRUE)
+                .status(Status.ACTIVE)
+                .build();
+        Role faculty = Role.builder()
+                .name(RoleName.FACULTY)
+                .activeIndex(Boolean.TRUE)
+                .status(Status.ACTIVE)
+                .build();
+        Role staff = Role.builder()
+                .name(RoleName.STAFF)
+                .activeIndex(Boolean.TRUE)
+                .status(Status.ACTIVE)
+                .build();
+        List<Role> roles = new ArrayList<>(Arrays.asList(staff,student,dba,faculty,admin));
 
         List<Role> roles1 = roleRepository.saveAll(roles);
 
