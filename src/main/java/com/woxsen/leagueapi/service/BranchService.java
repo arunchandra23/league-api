@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class BranchService {
@@ -31,6 +32,18 @@ public class BranchService {
                 .message(AppConstants.INSERT_SUCCESS)
                 .success(Boolean.TRUE)
                 .status(HttpStatus.CREATED)
+                .build();
+        return apiResponse;
+    }
+
+    public ApiResponse getAllBranches() {
+        List<Branch> branches = branchRepository.findAll();
+        ApiResponse apiResponse= ApiResponse.builder()
+                .data(branches)
+                .errors(new ArrayList<>())
+                .message(AppConstants.RETRIEVAL_SUCCESS)
+                .success(Boolean.TRUE)
+                .status(HttpStatus.OK)
                 .build();
         return apiResponse;
     }
