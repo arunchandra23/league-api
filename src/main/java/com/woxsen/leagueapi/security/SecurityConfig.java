@@ -51,6 +51,7 @@ public class SecurityConfig {
                 .configurationSource(corsConfigurationSource());
         return http.build();
     }
+    @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         List<String> allowOrigins = Arrays.asList("*");
