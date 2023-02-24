@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(AppConstants.BASE_URL+"/branches ")
+@RequestMapping(AppConstants.BASE_URL+"/branches")
 public class CourseController {
 
     @Autowired
