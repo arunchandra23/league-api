@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(AppConstants.BASE_URL)
+@RequestMapping(AppConstants.BASE_URL+"/branches")
 public class CourseController {
 
     @Autowired
@@ -24,12 +24,16 @@ public class CourseController {
     @Autowired
     private CourseService courseService;
 
-    @PostMapping("branch/{branchId}/course")
+    @PostMapping("/{branchId}/courses")
     public ResponseEntity<ApiResponse> addCourse(@PathVariable UUID branchId, @Valid @RequestBody CourseRequest courseRequest){
         ApiResponse apiResponse = courseService.addCourse(branchId, courseRequest);
         return new ResponseEntity<>(apiResponse,apiResponse.getStatus());
 
     }
+    @GetMapping("/{branchId}/courses")
+    public ResponseEntity<ApiResponse> getCoursesByBranch(@PathVariable UUID branchId){
+        ApiResponse apiResponse = courseService.getCoursesByBranch(branchId);
+        return new ResponseEntity<>(apiResponse,apiResponse.getStatus());
 
-
+    }
 }

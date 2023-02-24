@@ -16,8 +16,6 @@ import java.util.UUID;
 public class CourseRequest {
     @NotBlank(message = "In-valid course name")
     private String name;
-    @NotNull(message = "In-valid graduation year")
-    private int graduationYear;
     @NotBlank(message = "In-valid course type")
     private String courseType;
 

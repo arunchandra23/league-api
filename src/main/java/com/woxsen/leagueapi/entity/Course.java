@@ -26,8 +26,9 @@ public class Course {
     private UUID id;
 
     private String name;
-    @Column(name = "grad_year")
-    private int graduationYear;
+//    @Column(name = "grad_year")
+//    private int graduationYear;
+    @Enumerated(EnumType.STRING)
     @Column(name = "course_type")
     private CourseTypes type;
 

@@ -19,6 +19,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 @Entity
+@Table(name = "user_tbl")
 public class User {
 
     @Id
@@ -35,6 +36,8 @@ public class User {
 
     private String phone;
     private String password;
+    @Column(name = "grad_year")
+    private String graduationYear;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "course_id")
@@ -48,7 +51,7 @@ public class User {
 
     @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JoinTable(
-            name = "employee_role",
+            name = "user_role",
             joinColumns = @JoinColumn(name = "employee_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )

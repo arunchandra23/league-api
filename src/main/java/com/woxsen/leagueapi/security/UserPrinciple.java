@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 
@@ -22,6 +23,9 @@ public class UserPrinciple implements UserDetails {
         this.user = user;
     }
 
+    public UUID getUserId(){
+        return user.getId();
+    }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return user.getRoles().stream().map(role->new SimpleGrantedAuthority(role.getName().toString())).collect(Collectors.toList());

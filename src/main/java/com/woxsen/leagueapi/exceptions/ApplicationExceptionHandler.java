@@ -64,4 +64,17 @@ public class ApplicationExceptionHandler {
                 .build();
         return new ResponseEntity<>(apiResponse, HttpStatus.BAD_REQUEST);
     }
+    @ExceptionHandler(UnauthorizedException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ResponseEntity<ApiResponse> UnauthorizedExceptionHandler(UnauthorizedException exception) {
+
+        ApiResponse apiResponse = ApiResponse.builder()
+                .data(new ArrayList<>())
+                .errors(Arrays.asList(exception.getLocalizedMessage()))
+                .message(exception.getMessage())
+                .status(HttpStatus.UNAUTHORIZED)
+                .success(Boolean.FALSE)
+                .build();
+        return new ResponseEntity<>(apiResponse, apiResponse.getStatus());
+    }
 }

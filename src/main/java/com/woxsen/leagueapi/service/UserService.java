@@ -2,6 +2,7 @@ package com.woxsen.leagueapi.service;
 
 import com.woxsen.leagueapi.entity.Role;
 import com.woxsen.leagueapi.entity.User;
+import com.woxsen.leagueapi.exceptions.BadRequestException;
 import com.woxsen.leagueapi.exceptions.ResourceNotFoundException;
 import com.woxsen.leagueapi.payload.ApiResponse;
 import com.woxsen.leagueapi.repository.UserRepository;
@@ -22,6 +23,9 @@ public class UserService {
     public ApiResponse makeAdmin(String userName) {
         User user = userRepository.findByUserName(userName);
         if(user==null) throw new ResourceNotFoundException("User not found with username: "+userName);
+        if(user.getRoles().toString().contains(RoleName.ADMIN.toString())){
+            throw new BadRequestException("User with username: "+userName+" is already admin");
+        }
         user.getRoles().add(new Role(RoleName.ADMIN));
         userRepository.save(user);
         ApiResponse apiResponse = ApiResponse.builder()

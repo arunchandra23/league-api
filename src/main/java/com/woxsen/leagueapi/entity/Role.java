@@ -19,7 +19,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "roles")
+@Table(name = "roles_tbl")
 public class Role {
 
     public Role(RoleName name){
@@ -30,6 +30,7 @@ public class Role {
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "uuid2")
     private UUID id;
+    @Enumerated(EnumType.STRING)
     private RoleName name;
     @Enumerated(EnumType.STRING)
     private Status status;

@@ -1,10 +1,12 @@
 package com.woxsen.leagueapi.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.woxsen.leagueapi.utils.ArenaTypes;
 import com.woxsen.leagueapi.utils.Status;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -17,6 +19,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity
 public class Arena {
     @Id
@@ -32,6 +35,7 @@ public class Arena {
     @Enumerated(EnumType.STRING)
     private ArenaTypes arenaType;
 
+//    @JsonIgnore
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "arena_slots",
@@ -40,6 +44,7 @@ public class Arena {
     )
     private List<Slots> slots;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "arena")
     private List<Bookings> bookings;
 

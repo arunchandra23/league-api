@@ -28,6 +28,8 @@ public class RoleService {
                 .build();
         Role admin = Role.builder()
                 .name(RoleName.ADMIN)
+                .activeIndex(Boolean.TRUE)
+                .status(Status.ACTIVE)
                 .build();
         Role dba = Role.builder()
                 .name(RoleName.DBA)
