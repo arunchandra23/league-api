@@ -37,7 +37,7 @@ public class BranchService {
     }
 
     public ApiResponse getAllBranches() {
-        List<Branch> branches = branchRepository.findAll();
+        List<Branch> branches = branchRepository.findAllByActiveIndex(true);
         ApiResponse apiResponse= ApiResponse.builder()
                 .data(branches)
                 .errors(new ArrayList<>())

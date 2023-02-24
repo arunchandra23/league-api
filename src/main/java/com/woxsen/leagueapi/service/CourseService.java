@@ -31,7 +31,7 @@ public class CourseService {
         });
         Course course=Course.builder()
                 .name(courseRequest.getName())
-                .graduationYear(courseRequest.getGraduationYear())
+//                .graduationYear(courseRequest.getGraduationYear())
                 .type(CourseTypes.valueOf(courseRequest.getCourseType()))
                 .branch(branch)
                 .activeIndex(Boolean.TRUE)

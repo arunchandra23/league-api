@@ -36,7 +36,4 @@ public class CourseController {
         return new ResponseEntity<>(apiResponse,apiResponse.getStatus());
 
     }
-
-
-
 }

@@ -33,19 +33,5 @@ public class AuthenticationController {
         return new ResponseEntity<>(authenticationService.signUp(userRequest), HttpStatus.OK);
 
     }
-    @GetMapping("/availability/email")
-    public Boolean checkEmailAvailability(@RequestParam(required = false) String email) {
-        if (email == null) {
-            throw new BadRequestException("Mention the query parameter email");
-        }
-        return userService.isEmailAvailability(email);
 
-    }
-    @GetMapping("/availability/username")
-    public Boolean checkUserNameAvailability(@RequestParam(required = false) String userName) {
-        if (userName == null) {
-            throw new BadRequestException("Mention the query parameter userName");
-        }
-        return userService.isUserNameAvailability(userName);
-    }
 }

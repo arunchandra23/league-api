@@ -26,7 +26,7 @@ public class AdminController {
     private UserService userService;
 
     @PutMapping("/{userName}/makeAdmin")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity makeAdmin(@PathVariable String userName) {
         ApiResponse apiResponse=userService.makeAdmin(userName);
 

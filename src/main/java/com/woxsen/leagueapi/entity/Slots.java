@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.woxsen.leagueapi.utils.Status;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -17,6 +18,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity
 public class Slots {
     @Id
@@ -28,9 +30,9 @@ public class Slots {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-//    @JsonIgnore
-//    @ManyToMany(mappedBy = "slots")
-//    private List<Arena> arenas;
+    @JsonIgnore
+    @ManyToMany(mappedBy = "slots")
+    private List<Arena> arenas;
     private boolean activeIndex;
     @CreationTimestamp
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm")
