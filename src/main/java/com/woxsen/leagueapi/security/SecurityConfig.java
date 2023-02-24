@@ -14,6 +14,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -47,21 +48,24 @@ public class SecurityConfig {
                 .and()
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-        http.cors()
-                .configurationSource(corsConfigurationSource());
+        http.cors();
         return http.build();
     }
     @Bean
-    CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        List<String> allowOrigins = Arrays.asList("*");
-        configuration.setAllowedOrigins(allowOrigins);
-        configuration.setAllowedMethods(Collections.singletonList("*"));
-        configuration.setAllowedHeaders(Collections.singletonList("*"));
-        //in case authentication is enabled this flag MUST be set, otherwise CORS requests will fail
-        configuration.setAllowCredentials(true);
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
+    public CorsFilter corsFilter() {
+        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        final CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(true);
+        config.addAllowedOrigin("*");
+        config.addAllowedHeader("*");
+        config.addAllowedMethod("OPTIONS");
+        config.addAllowedMethod("HEAD");
+        config.addAllowedMethod("GET");
+        config.addAllowedMethod("PUT");
+        config.addAllowedMethod("POST");
+        config.addAllowedMethod("DELETE");
+        config.addAllowedMethod("PATCH");
+        source.registerCorsConfiguration("/**", config);
+        return new CorsFilter(source);
     }
 }
