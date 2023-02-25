@@ -1,6 +1,7 @@
 package com.woxsen.leagueapi.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.woxsen.leagueapi.utils.BookingStatus;
 import com.woxsen.leagueapi.utils.Status;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -10,6 +11,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Data
@@ -22,6 +24,11 @@ public class Bookings {
     @GenericGenerator(name = "system-uuid", strategy = "uuid2")
     private UUID id;
 
+    @Column(name = "booking_date")
+    private LocalDate date;
+
+    @Enumerated(EnumType.STRING)
+    private BookingStatus bookingStatus;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user;

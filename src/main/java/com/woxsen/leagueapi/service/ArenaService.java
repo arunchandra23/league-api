@@ -1,12 +1,14 @@
 package com.woxsen.leagueapi.service;
 
 import com.woxsen.leagueapi.entity.Arena;
+import com.woxsen.leagueapi.entity.Bookings;
 import com.woxsen.leagueapi.entity.Slots;
 import com.woxsen.leagueapi.exceptions.BadRequestException;
 import com.woxsen.leagueapi.exceptions.ResourceNotFoundException;
 import com.woxsen.leagueapi.payload.ApiResponse;
 import com.woxsen.leagueapi.payload.request.ArenaRequest;
 import com.woxsen.leagueapi.repository.ArenaRepository;
+import com.woxsen.leagueapi.repository.BookingsRepository;
 import com.woxsen.leagueapi.repository.BranchRepository;
 import com.woxsen.leagueapi.repository.SlotsRepository;
 import com.woxsen.leagueapi.utils.AppConstants;
@@ -16,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +28,8 @@ import java.util.UUID;
 public class ArenaService {
     @Autowired
     private ArenaRepository arenaRepository;
+    @Autowired
+    private BookingsRepository bookingsRepository;
     @Autowired
     private SlotsRepository slotsRepository;
     public static final String ARENA_NOT_FOUND="Arena not found with id: ";
@@ -82,9 +87,12 @@ public class ArenaService {
     }
 
     public ApiResponse getSlotsByArena(UUID arenaId) {
-        Arena arena = arenaRepository.findByIdAndActiveIndex(arenaId,true);
+        List<Slots> allSlots = arenaRepository.findByIdAndActiveIndex(arenaId,true).getSlots();
+        List<Bookings> availableSlots=bookingsRepository.getAvailableSlots(arenaId, LocalDate.now());
+        
+
         ApiResponse apiResponse= ApiResponse.builder()
-                .data(arena.getSlots())
+                .data(availableSlots)
                 .errors(new ArrayList<>())
                 .message(AppConstants.RETRIEVAL_SUCCESS)
                 .success(Boolean.TRUE)
