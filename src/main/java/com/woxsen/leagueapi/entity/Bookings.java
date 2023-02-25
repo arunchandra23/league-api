@@ -1,10 +1,12 @@
 package com.woxsen.leagueapi.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.woxsen.leagueapi.utils.BookingStatus;
 import com.woxsen.leagueapi.utils.Status;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -17,6 +19,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity
 public class Bookings {
     @Id
@@ -29,17 +32,21 @@ public class Bookings {
 
     @Enumerated(EnumType.STRING)
     private BookingStatus bookingStatus;
+    @JsonIgnore
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user;
 
+    @JsonIgnore
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "arena_id")
     private Arena arena;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "slot_id")
     private Slots slot;
+
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "payment_id")

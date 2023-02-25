@@ -1,7 +1,8 @@
-package com.woxsen.leagueapi.entity;
+package com.woxsen.leagueapi.payload.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.woxsen.leagueapi.entity.Arena;
 import com.woxsen.leagueapi.utils.Status;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -19,24 +20,15 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Entity
-public class Slots {
-    @Id
-    @GeneratedValue(generator = "system-uuid")
-    @GenericGenerator(name = "system-uuid", strategy = "uuid2")
+public class SlotsResponse {
+
     private UUID id;
 
     private String slot;
-    @Enumerated(EnumType.STRING)
     private Status status;
 
-    @JsonIgnore
-    @ManyToMany(mappedBy = "slots")
-    private List<Arena> arenas;
     private boolean activeIndex;
     private boolean isPaid;
-    @CreationTimestamp
-    @JsonFormat(pattern = "dd-MM-yyyy HH:mm")
-    @Column(name = "created_date")
-    private Timestamp createdDate;
+    private boolean isAvailable;
+
 }

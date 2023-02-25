@@ -7,6 +7,7 @@ import com.woxsen.leagueapi.exceptions.BadRequestException;
 import com.woxsen.leagueapi.exceptions.ResourceNotFoundException;
 import com.woxsen.leagueapi.payload.ApiResponse;
 import com.woxsen.leagueapi.payload.request.ArenaRequest;
+import com.woxsen.leagueapi.payload.response.SlotsResponse;
 import com.woxsen.leagueapi.repository.ArenaRepository;
 import com.woxsen.leagueapi.repository.BookingsRepository;
 import com.woxsen.leagueapi.repository.BranchRepository;
@@ -14,6 +15,8 @@ import com.woxsen.leagueapi.repository.SlotsRepository;
 import com.woxsen.leagueapi.utils.AppConstants;
 import com.woxsen.leagueapi.utils.ArenaTypes;
 import com.woxsen.leagueapi.utils.Status;
+import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -25,6 +28,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@Slf4j
 public class ArenaService {
     @Autowired
     private ArenaRepository arenaRepository;
@@ -32,7 +36,34 @@ public class ArenaService {
     private BookingsRepository bookingsRepository;
     @Autowired
     private SlotsRepository slotsRepository;
+
+    private ModelMapper modelMapper=new ModelMapper();
     public static final String ARENA_NOT_FOUND="Arena not found with id: ";
+
+    public static List<SlotsResponse> getAvailableSlots(UUID arenaId,ArenaRepository arenaRepository,BookingsRepository bookingsRepository){
+        ModelMapper modelMapper=new ModelMapper();
+        List<Slots> allSlots = arenaRepository.findByIdAndActiveIndex(arenaId,true).getSlots();
+        List<SlotsResponse> slotsResponses=new ArrayList<>();
+        List<Slots> unAvailableSlots=new ArrayList<>();
+        List<Bookings> unAvailableBookings=bookingsRepository.getUnAvailableSlots(arenaId, LocalDate.now());
+        unAvailableBookings.stream().forEach(x->{
+            unAvailableSlots.add(x.getSlot());
+        });
+        allSlots.stream().forEach(x->{
+            SlotsResponse slotsResponse = modelMapper.map(x, SlotsResponse.class);
+            if(unAvailableSlots.contains(x)){
+                slotsResponse.setAvailable(false);
+            }else{
+                slotsResponse.setAvailable(true);
+            }
+            slotsResponses.add(slotsResponse);
+        });
+        return slotsResponses;
+    }
+
+
+
+
     public ApiResponse addArena(ArenaRequest arenaRequest) {
         Arena arena=Arena.builder()
                 .arenaType(ArenaTypes.valueOf(arenaRequest.getArenaType()))
@@ -65,12 +96,8 @@ public class ArenaService {
     }
 
     public ApiResponse addSlotToArena(UUID arenaId, UUID slotId) {
-        Arena arena = arenaRepository.findById(arenaId).orElseThrow(()->{
-            throw new ResourceNotFoundException(ARENA_NOT_FOUND+arenaId);
-        });
-        Slots slot = slotsRepository.findById(slotId).orElseThrow(() -> {
-            throw new ResourceNotFoundException("Slot not found with id: " + slotId);
-        });
+        Arena arena = arenaRepository.findByIdAndActiveIndex(arenaId,true);
+        Slots slot = slotsRepository.findByIdAndActiveIndex(slotId,true);
         if(arena.getSlots().contains(slot)){
             throw new BadRequestException("Slot with id: "+ slotId+" already exists in arena with id: "+arenaId);
         }
@@ -87,10 +114,7 @@ public class ArenaService {
     }
 
     public ApiResponse getSlotsByArena(UUID arenaId) {
-        List<Slots> allSlots = arenaRepository.findByIdAndActiveIndex(arenaId,true).getSlots();
-        List<Bookings> availableSlots=bookingsRepository.getAvailableSlots(arenaId, LocalDate.now());
-        
-
+        List<SlotsResponse> availableSlots = getAvailableSlots(arenaId, arenaRepository, bookingsRepository);
         ApiResponse apiResponse= ApiResponse.builder()
                 .data(availableSlots)
                 .errors(new ArrayList<>())

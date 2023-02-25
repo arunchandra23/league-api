@@ -36,13 +36,13 @@ public class ArenaController {
 
     }
     @PostMapping("{arenaId}/slots/{slotId}")
-    public ResponseEntity<ApiResponse> addSlotToArena(@RequestParam UUID arenaId,@RequestParam UUID slotId){
+    public ResponseEntity<ApiResponse> addSlotToArena(@PathVariable UUID arenaId,@PathVariable UUID slotId){
         ApiResponse apiResponse = arenaService.addSlotToArena(arenaId,slotId);
         return new ResponseEntity<>(apiResponse,apiResponse.getStatus());
 
     }
     @GetMapping("{arenaId}/slots")
-    public ResponseEntity<ApiResponse> getSlotsByArena(@RequestParam UUID arenaId){
+    public ResponseEntity<ApiResponse> getSlotsByArena(@PathVariable UUID arenaId){
         ApiResponse apiResponse = arenaService.getSlotsByArena(arenaId);
         return new ResponseEntity<>(apiResponse,apiResponse.getStatus());
 
