@@ -72,4 +72,16 @@ public class BookingsService {
                 .build();
         return apiResponse;
     }
+
+    public ApiResponse getAllBookings(){
+        List<Bookings> allByActiveIndex = bookingsRepository.findAllByActiveIndex(true);
+        ApiResponse apiResponse= ApiResponse.builder()
+                .data(allByActiveIndex)
+                .errors(new ArrayList<>())
+                .message(AppConstants.RETRIEVAL_SUCCESS)
+                .success(Boolean.TRUE)
+                .status(HttpStatus.OK)
+                .build();
+        return apiResponse;
+    }
 }
