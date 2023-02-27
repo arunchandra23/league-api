@@ -4,9 +4,11 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import java.util.UUID;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,6 +23,10 @@ import com.woxsen.leagueapi.repository.UserRepository;
 @RequestMapping("/payu")
 @Slf4j
 public class PayUController {
+    @Value("${payu.salt}")
+    private String salt;
+    @Value("${payu.key}")
+    private String key;
     private final UserRepository userRepository;
 
     public PayUController(UserRepository userRepository) {
@@ -28,79 +34,53 @@ public class PayUController {
     }
 
     @PostMapping("/generate-hash")
-    public String generateHash(@RequestParam String key,
-                               @RequestParam Double amountq,
+    public Map generateHash(@RequestParam Double amount,
                                @RequestParam UUID userId,
                                @RequestParam(required = false) String surl,
                                @RequestParam(required = false) String furl) {
         User user = userRepository.findByIdAndActiveIndex(userId, true);
-        String txnId= UUID.randomUUID().toString();
-        String firstName= "Ashish";
-        String email= "test@gmail.com";
-        String phone= "9988776655";
-        String salt = "UkojH5TS";
-        String productinfo = "iPhone";
-        String amount = String.valueOf(1);
-        Map<String,String> responseFinal =new HashMap<>();
-        log.info(txnId);
+        Map<String,String> paymentDetail=new HashMap<>();
+        String hashString = "";
 
+        String txnId = UUID.randomUUID().toString();
+        paymentDetail.put("txnId",txnId);
+        String hash = "";
+        //String otherPostParamSeq = "phone|surl|furl|lastname|curl|address1|address2|city|state|country|zipcode|pg";
+        String hashSequence = "key|txnid|amount|productinfo|firstname|email|||||||||||";
+        hashString = hashSequence.concat(salt);
+        hashString = hashString.replace("key", key);
+        hashString = hashString.replace("txnid", txnId);
+        hashString = hashString.replace("amount", String.valueOf(amount));
+        hashString = hashString.replace("productinfo", "iPhone");
+        hashString = hashString.replace("firstname", "Ashish");
+        hashString = hashString.replace("email", "test@gmail.com");
 
-        StringBuilder hashString = new StringBuilder();
-        hashString.append(key).append("|")
-                .append(txnId).append("|")
-                .append(amount).append("|")
-                .append(productinfo).append("|")
-                .append(firstName).append("|")
-                .append(email).append("|")
-                .append("||||||||||")
-                .append(salt);
+        log.info(hashString);
 
-        String hash = hashCal("SHA-512", hashString.toString());
-        
-        // Create response object with hash and other required parameters
-        Map<String, String> response = new HashMap<>();
-        response.put("hash", hash);
-        response.put("productinfo", "iPhone");//
-        response.put("key", "oZ7oo9");//
-        response.put("txnid", txnId);//
-        response.put("amount", String.valueOf(1));//
-        response.put("firstname", "Ashish");//
-        response.put("email", "test@gmail.com");//
+        hash = hashCal("SHA-512", hashString);
+        paymentDetail.put("hash",hash);
 
-        response.put("phone", "9988776655");
-        response.put("surl", "http://localhost:8080/api/v1/util/success");
-        response.put("furl", "http://localhost:3000/");
-        
-        // Convert response object to JSON and return
-        ObjectMapper mapper = new ObjectMapper();
-        String jsonResponse = "";
-        try {
-            jsonResponse = mapper.writeValueAsString(response);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return jsonResponse;
+        return paymentDetail;
     }
 
-    private String hashCal(String type, String str) {
-        byte[] hashSeq = str.getBytes();
-        StringBuilder hexString = new StringBuilder();
+    public static String hashCal(String type, String str) {
+        byte[] hashseq = str.getBytes();
+        StringBuffer hexString = new StringBuffer();
         try {
             MessageDigest algorithm = MessageDigest.getInstance(type);
             algorithm.reset();
-            algorithm.update(hashSeq);
+            algorithm.update(hashseq);
             byte messageDigest[] = algorithm.digest();
-
-            for (byte aMessageDigest : messageDigest) {
-                String hex = Integer.toHexString(0xFF & aMessageDigest);
-                if (hex.length() == 1)
+            for (int i = 0; i < messageDigest.length; i++) {
+                String hex = Integer.toHexString(0xFF & messageDigest[i]);
+                if (hex.length() == 1) {
                     hexString.append("0");
+                }
                 hexString.append(hex);
             }
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
 
+        } catch (NoSuchAlgorithmException nsae) {
+        }
         return hexString.toString();
     }
 }
