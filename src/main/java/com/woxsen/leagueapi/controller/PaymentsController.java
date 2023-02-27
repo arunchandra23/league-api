@@ -2,6 +2,8 @@ package com.woxsen.leagueapi.controller;
 
 import java.util.UUID;
 
+import com.woxsen.leagueapi.payload.request.PaymentRequest;
+import com.woxsen.leagueapi.service.PaymentsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,10 +25,14 @@ public class PaymentsController {
     @Autowired
     private SlotsService slotsService;
     @Autowired
-    private BookingsService bookingsService;
+    private PaymentsService paymentsService;
 
     @PostMapping("/redirect")
-    public RedirectView addBooking(@PathVariable UUID userId, @Valid @RequestBody BookingRequest bookingRequest){
+    public RedirectView addBooking(@Valid @RequestBody PaymentRequest paymentRequest){
+        paymentsService.addPayment(paymentRequest);
+        if(paymentRequest.getStatus()=="success"){
+
+        }
 
             RedirectView redirectView=new RedirectView();
             redirectView.setUrl("https://twitter.com");

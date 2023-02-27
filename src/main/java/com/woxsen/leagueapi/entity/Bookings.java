@@ -21,6 +21,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 @Entity
+
 public class Bookings {
     @Id
     @GeneratedValue(generator = "system-uuid")
@@ -37,12 +38,11 @@ public class Bookings {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @JsonIgnore
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "arena_id")
     private Arena arena;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "slot_id")
     private Slots slot;
