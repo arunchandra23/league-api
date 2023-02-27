@@ -29,6 +29,8 @@ public class Payment {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user;
+    @OneToOne(cascade = CascadeType.ALL,mappedBy = "payment")
+    private Bookings bookings;
 
     @Column(name = "mode")
     private String mode;
