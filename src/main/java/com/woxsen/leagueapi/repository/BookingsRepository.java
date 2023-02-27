@@ -16,8 +16,8 @@ public interface BookingsRepository extends JpaRepository<Bookings, UUID> {
 
 	@Query(nativeQuery = true, value = "SELECT * FROM bookings WHERE arena_id=:arenaId AND booking_date=:date AND booking_status LIKE 'PENDING' OR booking_status LIKE 'CONFIRMED' ")
 	List<Bookings> getUnAvailableSlots(@Param("arenaId") UUID arenaId, @Param("date") LocalDate bookingDate);
-@Query(nativeQuery = true, value = "SELECT * FROM bookings WHERE arena_id=:arenaId AND booking_date=:date AND booking_status LIKE 'PENDING' OR booking_status LIKE 'CONFIRMED' ")
-	List<Bookings> getUnAvailableSlots2(@Param("arenaId") UUID arenaId, @Param("date") LocalDate bookingDate);
+	@Query(nativeQuery = true, value = "SELECT * FROM bookings WHERE user_id=:userId AND active_index=1")
+	List<Bookings> getBookingsByUser(@Param("userId") UUID userId);
 
 	List<Bookings> findAllByActiveIndex(boolean b);
 }

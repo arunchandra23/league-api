@@ -32,8 +32,8 @@ public class BookingsController {
 
     }
     @GetMapping("/users/{userId}/bookings")
-    public ResponseEntity<ApiResponse> getAllSlots(){
-        ApiResponse apiResponse = slotsService.getAllSlots();
+    public ResponseEntity<ApiResponse> getBookingsByUser(@PathVariable UUID userId){
+        ApiResponse apiResponse = bookingsService.getBookingsByUser(userId);
         return new ResponseEntity<>(apiResponse,apiResponse.getStatus());
 
     }

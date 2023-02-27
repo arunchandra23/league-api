@@ -84,4 +84,15 @@ public class BookingsService {
                 .build();
         return apiResponse;
     }
+    public ApiResponse getBookingsByUser(UUID userId){
+        List<Bookings> bookingsByUser = bookingsRepository.getBookingsByUser(userId);
+        ApiResponse apiResponse= ApiResponse.builder()
+                .data(bookingsByUser)
+                .errors(new ArrayList<>())
+                .message(AppConstants.RETRIEVAL_SUCCESS)
+                .success(Boolean.TRUE)
+                .status(HttpStatus.OK)
+                .build();
+        return apiResponse;
+    }
 }

@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,6 +19,7 @@ import com.woxsen.leagueapi.repository.UserRepository;
 
 @RestController
 @RequestMapping("/payu")
+@Slf4j
 public class PayUController {
     private final UserRepository userRepository;
 
@@ -27,24 +29,30 @@ public class PayUController {
 
     @PostMapping("/generate-hash")
     public String generateHash(@RequestParam String key,
-                               @RequestParam Double amount,
+                               @RequestParam Double amountq,
                                @RequestParam UUID userId,
                                @RequestParam(required = false) String surl,
                                @RequestParam(required = false) String furl) {
         User user = userRepository.findByIdAndActiveIndex(userId, true);
         String txnId= UUID.randomUUID().toString();
-        String firstName= user.getFirstName();
-        String email= user.getEmail();
-        String phone= user.getPhone();
-        String salt = "YOUR_SALT_HERE";
+        String firstName= "Ashish";
+        String email= "test@gmail.com";
+        String phone= "9988776655";
+        String salt = "UkojH5TS";
+        String productinfo = "iPhone";
+        String amount = String.valueOf(1);
+        Map<String,String> responseFinal =new HashMap<>();
+        log.info(txnId);
+
 
         StringBuilder hashString = new StringBuilder();
         hashString.append(key).append("|")
                 .append(txnId).append("|")
                 .append(amount).append("|")
+                .append(productinfo).append("|")
                 .append(firstName).append("|")
                 .append(email).append("|")
-                .append("|||||")
+                .append("||||||||||")
                 .append(salt);
 
         String hash = hashCal("SHA-512", hashString.toString());
@@ -52,14 +60,16 @@ public class PayUController {
         // Create response object with hash and other required parameters
         Map<String, String> response = new HashMap<>();
         response.put("hash", hash);
-        response.put("key", key);
-        response.put("txnid", txnId);
-        response.put("amount", String.valueOf(amount));
-        response.put("firstname", firstName);
-        response.put("email", email);
-        response.put("phone", phone);
-        response.put("surl", surl);
-        response.put("furl", furl);
+        response.put("productinfo", "iPhone");//
+        response.put("key", "oZ7oo9");//
+        response.put("txnid", txnId);//
+        response.put("amount", String.valueOf(1));//
+        response.put("firstname", "Ashish");//
+        response.put("email", "test@gmail.com");//
+
+        response.put("phone", "9988776655");
+        response.put("surl", "http://localhost:8080/api/v1/util/success");
+        response.put("furl", "http://localhost:3000/");
         
         // Convert response object to JSON and return
         ObjectMapper mapper = new ObjectMapper();
@@ -90,6 +100,7 @@ public class PayUController {
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
+
         return hexString.toString();
     }
 }

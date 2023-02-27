@@ -1,20 +1,21 @@
 package com.woxsen.leagueapi.controller;
 
 import com.woxsen.leagueapi.exceptions.BadRequestException;
-import com.woxsen.leagueapi.payload.ApiResponse;
-import com.woxsen.leagueapi.payload.request.CourseRequest;
 import com.woxsen.leagueapi.service.BranchService;
 import com.woxsen.leagueapi.service.CourseService;
 import com.woxsen.leagueapi.service.UserService;
 import com.woxsen.leagueapi.utils.AppConstants;
 import com.woxsen.leagueapi.utils.ArenaTypes;
 import com.woxsen.leagueapi.utils.CourseTypes;
-import jakarta.validation.Valid;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
+import java.io.IOException;
 import java.util.*;
 
 @RestController
@@ -61,6 +62,25 @@ public class UtilityController {
         }
         return userService.isUserNameAvailability(userName);
     }
+//    @RequestMapping(method = RequestMethod.POST)
+//    @RequestMapping(
+//            value = "/red",
+//            method = RequestMethod.GET)
+//    public void redirectToTwitter(HttpServletResponse httpServletResponse) throws IOException {
+//        httpServletResponse.sendRedirect("https://twitter.com");
+//    }
+//    @PostMapping("/submitForm")
+//    public RedirectView submitForm(
+//                             RedirectAttributes redirectAttributes) {
+//        // Do some processing with the form data
+//    RedirectView redirectView=new RedirectView();
+//    redirectView.setUrl("https://twitter.com");
+//        // Add a message to the redirect attributes
+//        redirectAttributes.addFlashAttribute("message", "Form submitted successfully!");
+//
+//        // Redirect to a URL
+//        return redirectView;
+//    }
 
 
 
