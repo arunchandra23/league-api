@@ -1,18 +1,20 @@
 package com.woxsen.leagueapi.entity;
 
+import java.sql.Timestamp;
+import java.util.UUID;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.GenericGenerator;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.woxsen.leagueapi.utils.RoleName;
 import com.woxsen.leagueapi.utils.Status;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.GenericGenerator;
-
-import java.sql.Timestamp;
-import java.util.UUID;
 
 @Data
 @AllArgsConstructor

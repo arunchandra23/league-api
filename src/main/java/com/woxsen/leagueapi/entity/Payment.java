@@ -1,17 +1,18 @@
 package com.woxsen.leagueapi.entity;
 
+import java.sql.Timestamp;
+import java.util.UUID;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.GenericGenerator;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.woxsen.leagueapi.utils.Status;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.GenericGenerator;
-
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -23,12 +24,15 @@ public class Payment {
     @GenericGenerator(name = "system-uuid", strategy = "uuid2")
     private UUID id;
 
-    private long amount;
+    private String amount;
 
     private String txnid;
+    @JsonIgnore
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user;
+
+    @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL,mappedBy = "payment")
     private Bookings bookings;
 

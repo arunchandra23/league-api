@@ -4,20 +4,18 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 import java.util.UUID;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woxsen.leagueapi.entity.User;
 import com.woxsen.leagueapi.repository.UserRepository;
+
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/payu")
@@ -51,7 +49,7 @@ public class PayUController {
         hashString = hashString.replace("key", key);
         hashString = hashString.replace("txnid", txnId);
         hashString = hashString.replace("amount", String.valueOf(amount));
-        hashString = hashString.replace("productinfo", "iPhone");
+        hashString = hashString.replace("productinfo", "slot-booking");
         hashString = hashString.replace("firstname", "Ashish");
         hashString = hashString.replace("email", "test@gmail.com");
 

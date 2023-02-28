@@ -1,5 +1,12 @@
 package com.woxsen.leagueapi.service;
 
+import java.util.ArrayList;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+
 import com.woxsen.leagueapi.entity.Role;
 import com.woxsen.leagueapi.entity.User;
 import com.woxsen.leagueapi.exceptions.BadRequestException;
@@ -7,12 +14,6 @@ import com.woxsen.leagueapi.exceptions.ResourceNotFoundException;
 import com.woxsen.leagueapi.payload.ApiResponse;
 import com.woxsen.leagueapi.repository.UserRepository;
 import com.woxsen.leagueapi.utils.RoleName;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
 
 @Service
 public class UserService {

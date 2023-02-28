@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import com.woxsen.leagueapi.exceptions.ResourceNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +14,7 @@ import com.woxsen.leagueapi.entity.Arena;
 import com.woxsen.leagueapi.entity.Bookings;
 import com.woxsen.leagueapi.entity.Slots;
 import com.woxsen.leagueapi.exceptions.BadRequestException;
+import com.woxsen.leagueapi.exceptions.ResourceNotFoundException;
 import com.woxsen.leagueapi.payload.ApiResponse;
 import com.woxsen.leagueapi.payload.request.ArenaRequest;
 import com.woxsen.leagueapi.payload.response.SlotsResponse;

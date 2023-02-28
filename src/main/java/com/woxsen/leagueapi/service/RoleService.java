@@ -1,17 +1,17 @@
 package com.woxsen.leagueapi.service;
 
-import com.woxsen.leagueapi.entity.Role;
-import com.woxsen.leagueapi.exceptions.BadRequestException;
-import com.woxsen.leagueapi.repository.RoleRepository;
-import com.woxsen.leagueapi.repository.UserRepository;
-import com.woxsen.leagueapi.utils.RoleName;
-import com.woxsen.leagueapi.utils.Status;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.woxsen.leagueapi.entity.Role;
+import com.woxsen.leagueapi.exceptions.BadRequestException;
+import com.woxsen.leagueapi.repository.RoleRepository;
+import com.woxsen.leagueapi.utils.RoleName;
+import com.woxsen.leagueapi.utils.Status;
 
 @Service
 public class RoleService {

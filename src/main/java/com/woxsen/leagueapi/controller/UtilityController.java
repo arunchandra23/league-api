@@ -1,5 +1,17 @@
 package com.woxsen.leagueapi.controller;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.woxsen.leagueapi.exceptions.BadRequestException;
 import com.woxsen.leagueapi.service.BranchService;
 import com.woxsen.leagueapi.service.CourseService;
@@ -7,16 +19,6 @@ import com.woxsen.leagueapi.service.UserService;
 import com.woxsen.leagueapi.utils.AppConstants;
 import com.woxsen.leagueapi.utils.ArenaTypes;
 import com.woxsen.leagueapi.utils.CourseTypes;
-import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.view.RedirectView;
-
-import java.io.IOException;
-import java.util.*;
 
 @RestController
 @RequestMapping(AppConstants.BASE_URL+"/util")

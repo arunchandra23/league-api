@@ -5,9 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import com.woxsen.leagueapi.exceptions.BadRequestException;
-import com.woxsen.leagueapi.payload.response.SlotsResponse;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -16,12 +13,16 @@ import com.woxsen.leagueapi.entity.Arena;
 import com.woxsen.leagueapi.entity.Bookings;
 import com.woxsen.leagueapi.entity.Slots;
 import com.woxsen.leagueapi.entity.User;
+import com.woxsen.leagueapi.exceptions.BadRequestException;
 import com.woxsen.leagueapi.payload.ApiResponse;
 import com.woxsen.leagueapi.payload.request.BookingRequest;
+import com.woxsen.leagueapi.payload.response.SlotsResponse;
 import com.woxsen.leagueapi.repository.*;
 import com.woxsen.leagueapi.utils.AppConstants;
 import com.woxsen.leagueapi.utils.BookingStatus;
 import com.woxsen.leagueapi.utils.Status;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j

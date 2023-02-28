@@ -1,10 +1,5 @@
 package com.woxsen.leagueapi.payload.request;
 
-import com.woxsen.leagueapi.entity.User;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class PaymentRequest {
 
-    private long amount;
+    private String amount;
     private String txnid;
 
     private String mode;

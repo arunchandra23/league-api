@@ -1,18 +1,21 @@
 package com.woxsen.leagueapi.entity;
 
+import java.sql.Timestamp;
+import java.util.List;
+import java.util.UUID;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.GenericGenerator;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.woxsen.leagueapi.utils.Status;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.GenericGenerator;
-
-import java.sql.Timestamp;
-import java.util.List;
-import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -46,6 +49,7 @@ public class User {
     @JoinColumn(name = "branch_id")
     private Branch branch;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<Payment> payments;
 
