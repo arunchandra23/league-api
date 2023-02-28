@@ -3,6 +3,7 @@ package com.woxsen.leagueapi.entity;
 import java.sql.Timestamp;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -37,6 +38,7 @@ public class Role {
     @Enumerated(EnumType.STRING)
     private Status status;
     private boolean activeIndex;
+    @JsonIgnore
     @CreationTimestamp
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm")
     @Column(name = "created_date")

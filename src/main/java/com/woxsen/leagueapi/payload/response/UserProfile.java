@@ -34,16 +34,13 @@ public class UserProfile {
 
 	private String graduationYear;
 
-	private Course course;
+	private CourseResponse course;
 
-	private Branch branch;
-
-	private List<Payment> payments;
+	private BranchResponse branch;
 
 	private List<Role> roles;
 
 	private Status status;
 	private boolean activeIndex;
 
-	private Timestamp createdDate;
 }
