@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import com.woxsen.leagueapi.exceptions.ResourceNotFoundException;
+import com.woxsen.leagueapi.payload.response.BookingDetailsResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -95,5 +97,27 @@ public class BookingsService {
                 .status(HttpStatus.OK)
                 .build();
         return apiResponse;
+    }
+
+    public ApiResponse getBookingDetailsByBookingId(UUID bookingId) {
+        Bookings booking = bookingsRepository.findByIdAndActiveIndex(bookingId, true);
+        if(booking==null){
+            throw new ResourceNotFoundException("Booking not found with id: "+bookingId);
+        }
+        BookingDetailsResponse response=BookingDetailsResponse.builder()
+                .bookingId(booking.getId())
+                .bookingDate(booking.getDate().toString())
+                .paymentStatus(booking.getPayment().getStatus())
+                .arena(booking.getArena().getName())
+                .build();
+        ApiResponse apiResponse= ApiResponse.builder()
+                .data(response)
+                .errors(new ArrayList<>())
+                .message(AppConstants.RETRIEVAL_SUCCESS)
+                .success(Boolean.TRUE)
+                .status(HttpStatus.OK)
+                .build();
+        return apiResponse;
+
     }
 }

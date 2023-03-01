@@ -1,5 +1,6 @@
 package com.woxsen.leagueapi.entity;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.UUID;
 
@@ -23,7 +24,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @Entity
 @Table(name = "roles_tbl")
-public class Role {
+public class Role implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     public Role(RoleName name){
         this.name=name;

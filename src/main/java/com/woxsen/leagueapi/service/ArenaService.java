@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import com.woxsen.leagueapi.payload.response.ArenaResponse;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -78,6 +79,7 @@ public class ArenaService {
 
 	public ApiResponse getAllArenas() {
 		List<Arena> allByActiveIndex = arenaRepository.findAllByActiveIndex(true);
+//		ArenaResponse
 		ApiResponse apiResponse = ApiResponse.builder().data(allByActiveIndex).errors(new ArrayList<>())
 				.message(AppConstants.RETRIEVAL_SUCCESS).success(Boolean.TRUE).status(HttpStatus.OK).build();
 		return apiResponse;

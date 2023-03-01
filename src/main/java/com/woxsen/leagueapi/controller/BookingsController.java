@@ -35,4 +35,10 @@ public class BookingsController {
         return new ResponseEntity<>(apiResponse,apiResponse.getStatus());
 
     }
+    @GetMapping("/bookings")
+    public ResponseEntity<ApiResponse> getBookingDetailsByBookingId(@RequestParam UUID bookingId){
+        ApiResponse apiResponse = bookingsService.getBookingDetailsByBookingId(bookingId);
+        return new ResponseEntity<>(apiResponse,apiResponse.getStatus());
+
+    }
 }

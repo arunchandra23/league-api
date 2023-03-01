@@ -3,6 +3,7 @@ package com.woxsen.leagueapi.controller;
 import java.util.Map;
 import java.util.UUID;
 
+import com.woxsen.leagueapi.entity.Payment;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -39,12 +40,12 @@ public class PaymentsController {
 	public RedirectView addBooking(@PathVariable UUID userId, @PathVariable UUID arenaId, @PathVariable UUID slotId,
 								   @RequestParam Map<String,String> formRequest) {
 		PaymentRequest paymentRequest=modelMapper.map(formRequest,PaymentRequest.class);
-		paymentsService.addPayment(paymentRequest, userId, arenaId, slotId);
+		Payment payment = paymentsService.addPayment(paymentRequest, userId, arenaId, slotId);
 		log.info(paymentRequest.toString());
 		log.info(userId+"<>"+arenaId+"<>"+slotId+"<>"+formRequest.toString());
 		RedirectView redirectView = new RedirectView();
 		if (paymentRequest.getStatus().equals("success")) {
-			redirectView.setUrl("http://localhost:3000/success");
+			redirectView.setUrl("http://localhost:3000/success?bookingId="+payment.getBookings().getId());
 		} else {
 			redirectView.setUrl("http://localhost:3000/fail");
 		}

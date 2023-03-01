@@ -20,4 +20,6 @@ public interface BookingsRepository extends JpaRepository<Bookings, UUID> {
 	List<Bookings> getBookingsByUser(@Param("userId") UUID userId);
 
 	List<Bookings> findAllByActiveIndex(boolean b);
+
+	Bookings findByIdAndActiveIndex(UUID bookingId, boolean b);
 }
