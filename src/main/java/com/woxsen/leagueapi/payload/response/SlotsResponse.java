@@ -23,5 +23,7 @@ public class SlotsResponse {
     private boolean activeIndex;
     private boolean isPaid;
     private boolean isAvailable;
+    private boolean forWomen;
+
 
 }
