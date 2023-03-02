@@ -42,8 +42,8 @@ public class ArenaController {
 
     }
     @GetMapping("{arenaId}/slots")
-    public ResponseEntity<ApiResponse> getSlotsByArena(@PathVariable UUID arenaId){
-        ApiResponse apiResponse = arenaService.getSlotsByArena(arenaId);
+    public ResponseEntity<ApiResponse> getSlotsByArena(@PathVariable UUID arenaId,String day){
+        ApiResponse apiResponse = arenaService.getSlotsByArena(arenaId,day);
         return new ResponseEntity<>(apiResponse,apiResponse.getStatus());
 
     }

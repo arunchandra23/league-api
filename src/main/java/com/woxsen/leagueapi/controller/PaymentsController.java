@@ -38,9 +38,9 @@ public class PaymentsController {
 					MediaType.APPLICATION_JSON_VALUE
 			})
 	public RedirectView addBooking(@PathVariable UUID userId, @PathVariable UUID arenaId, @PathVariable UUID slotId,
-								   @RequestParam Map<String,String> formRequest) {
+								   @RequestParam String day,@RequestParam Map<String,String> formRequest) {
 		PaymentRequest paymentRequest=modelMapper.map(formRequest,PaymentRequest.class);
-		Payment payment = paymentsService.addPayment(paymentRequest, userId, arenaId, slotId);
+		Payment payment = paymentsService.addPayment(paymentRequest, userId, arenaId, slotId,day);
 		log.info(paymentRequest.toString());
 		log.info(userId+"<>"+arenaId+"<>"+slotId+"<>"+formRequest.toString());
 		RedirectView redirectView = new RedirectView();

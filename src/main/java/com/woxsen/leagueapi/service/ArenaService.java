@@ -2,11 +2,9 @@ package com.woxsen.leagueapi.service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import com.woxsen.leagueapi.payload.response.ArenaResponse;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -43,13 +41,13 @@ public class ArenaService {
 	public static final String ARENA_NOT_FOUND = "Arena not found with id: ";
 
 	public static List<SlotsResponse> getAvailableSlots(UUID arenaId, ArenaRepository arenaRepository,
-			BookingsRepository bookingsRepository) {
+			BookingsRepository bookingsRepository,LocalDate date) {
 		ModelMapper modelMapper = new ModelMapper();
 		try {
 			List<Slots> allSlots = arenaRepository.findByIdAndActiveIndex(arenaId, true).getSlots();
 			List<SlotsResponse> slotsResponses = new ArrayList<>();
 			List<Slots> unAvailableSlots = new ArrayList<>();
-			List<Bookings> unAvailableBookings = bookingsRepository.getUnAvailableSlots(arenaId, LocalDate.now());
+			List<Bookings> unAvailableBookings = bookingsRepository.getUnAvailableSlots(arenaId, date);
 			unAvailableBookings.stream().forEach(x -> {
 				unAvailableSlots.add(x.getSlot());
 			});
@@ -139,8 +137,8 @@ public class ArenaService {
 		return apiResponse;
 	}
 
-	public ApiResponse getSlotsByArena(UUID arenaId) {
-		List<SlotsResponse> availableSlots = getAvailableSlots(arenaId, arenaRepository, bookingsRepository);
+	public ApiResponse getSlotsByArena(UUID arenaId, String day) {
+		List<SlotsResponse> availableSlots = getAvailableSlots(arenaId, arenaRepository, bookingsRepository,BookingsService.getDate(day));
 		ApiResponse apiResponse = ApiResponse.builder().data(availableSlots).errors(new ArrayList<>())
 				.message(AppConstants.RETRIEVAL_SUCCESS).success(Boolean.TRUE).status(HttpStatus.OK).build();
 		return apiResponse;

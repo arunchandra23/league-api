@@ -40,12 +40,23 @@ public class BookingsService {
     @Autowired
     private UserRepository userRepository;
 
-    public ApiResponse addBooking(UUID userId, BookingRequest bookingRequest) {
+    public static LocalDate getDate(String day){
+        if(day.equals("today")){
+            return LocalDate.now();
+        }if(day.equals("tomorrow")){
+            return LocalDate.now().plusDays(1);
+        }
+        else{
+            return LocalDate.now().plusDays(2);
+        }
+    };
+    public ApiResponse addBooking(UUID userId, BookingRequest bookingRequest,String day) {
 //        List<Bookings> unAvailableSlots = bookingsRepository.getUnAvailableSlots(bookingRequest.getArenaId(), LocalDate.now());
+
         if(!slotsRepository.existsByIdAndActiveIndex(bookingRequest.getSlotId(),true)){
             throw new BadRequestException("Slot with id: "+bookingRequest.getSlotId()+" does not exist");
         }
-        List<SlotsResponse> availableSlots = ArenaService.getAvailableSlots(bookingRequest.getArenaId(), arenaRepository, bookingsRepository);
+        List<SlotsResponse> availableSlots = ArenaService.getAvailableSlots(bookingRequest.getArenaId(), arenaRepository, bookingsRepository,getDate(day));
         availableSlots.stream().forEach(slot->{
             if(slot.getId().toString().equals(bookingRequest.getSlotId().toString())){
                 if(!slot.isAvailable()){
@@ -61,7 +72,7 @@ public class BookingsService {
                 .slot(slot)
                 .user(user)
                 .bookingStatus(BookingStatus.PENDING)
-                .date(LocalDate.now())
+                .date(getDate(day))
                 .activeIndex(Boolean.TRUE)
                 .status(Status.ACTIVE)
                 .build();

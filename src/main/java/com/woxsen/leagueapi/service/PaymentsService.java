@@ -29,7 +29,7 @@ public class PaymentsService {
 	@Autowired
 	private BookingsRepository bookingsRepository;
 
-	public Payment addPayment(PaymentRequest paymentRequest, UUID userId, UUID arenaId, UUID slotId) {
+	public Payment addPayment(PaymentRequest paymentRequest, UUID userId, UUID arenaId, UUID slotId,String day) {
 		User user = userRepository.findById(userId).get();
 		Bookings booking = new Bookings();
 		Payment payment = modelMapper.map(paymentRequest, Payment.class);
@@ -37,7 +37,7 @@ public class PaymentsService {
 		payment.setActiveIndex(true);
 		if(paymentRequest.getStatus().equals("success")){
 			BookingRequest bookingRequest = BookingRequest.builder().arenaId(arenaId).slotId(slotId).build();
-			ApiResponse apiResponse = bookingsService.addBooking(userId, bookingRequest);
+			ApiResponse apiResponse = bookingsService.addBooking(userId, bookingRequest,day);
 			booking = (Bookings) apiResponse.getData();
 			Bookings save = bookingsRepository.findById(booking.getId()).get();
 			save.setPayment(payment);

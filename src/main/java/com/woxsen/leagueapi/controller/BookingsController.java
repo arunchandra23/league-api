@@ -24,8 +24,8 @@ public class BookingsController {
     private BookingsService bookingsService;
 
     @PostMapping("/users/{userId}/bookings")
-    public ResponseEntity<ApiResponse> addBooking(@PathVariable UUID userId, @Valid @RequestBody BookingRequest bookingRequest){
-        ApiResponse apiResponse = bookingsService.addBooking(userId,bookingRequest);
+    public ResponseEntity<ApiResponse> addBooking(@PathVariable UUID userId,@RequestParam String day, @Valid @RequestBody BookingRequest bookingRequest){
+        ApiResponse apiResponse = bookingsService.addBooking(userId,bookingRequest,day);
         return new ResponseEntity<>(apiResponse,apiResponse.getStatus());
 
     }
