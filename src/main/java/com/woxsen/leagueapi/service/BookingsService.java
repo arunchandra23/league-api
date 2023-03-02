@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.UUID;
 
 import com.woxsen.leagueapi.exceptions.ResourceNotFoundException;
+import com.woxsen.leagueapi.payload.response.BookingConfirmResponse;
 import com.woxsen.leagueapi.payload.response.BookingDetailsResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -100,8 +101,19 @@ public class BookingsService {
     }
     public ApiResponse getBookingsByUser(UUID userId){
         List<Bookings> bookingsByUser = bookingsRepository.getBookingsByUser(userId);
+        List<BookingConfirmResponse> responses=new ArrayList<>();
+        bookingsByUser.stream().forEach(booking->{
+            BookingConfirmResponse b=BookingConfirmResponse.builder()
+                    .status(booking.getBookingStatus().toString())
+                    .bookingId(booking.getId())
+                    .arena(booking.getArena().getName())
+                    .slot(booking.getSlot().getSlot())
+                    .date(booking.getDate().toString())
+                    .build();
+            responses.add(b);
+        });
         ApiResponse apiResponse= ApiResponse.builder()
-                .data(bookingsByUser)
+                .data(responses)
                 .errors(new ArrayList<>())
                 .message(AppConstants.RETRIEVAL_SUCCESS)
                 .success(Boolean.TRUE)
