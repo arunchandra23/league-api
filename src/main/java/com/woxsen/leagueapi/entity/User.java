@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.woxsen.leagueapi.utils.GenderTypes;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -38,6 +39,8 @@ public class User implements Serializable {
     private String userName;
     @Column(unique = true)
     private String email;
+
+    private GenderTypes gender;
 
     private String phone;
     private String password;
