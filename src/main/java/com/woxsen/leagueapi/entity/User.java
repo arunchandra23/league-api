@@ -40,6 +40,7 @@ public class User implements Serializable {
     @Column(unique = true)
     private String email;
 
+    @Enumerated(EnumType.STRING)
     private GenderTypes gender;
 
     private String phone;
