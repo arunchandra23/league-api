@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import com.woxsen.leagueapi.payload.response.BookingsAdminResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -129,7 +130,7 @@ public class BookingsService {
         BookingDetailsResponse response=BookingDetailsResponse.builder()
                 .bookingId(booking.getId())
                 .bookingDate(booking.getDate().toString())
-                .paymentStatus(booking.getPayment().getStatus())
+                .paymentStatus(booking.getPayment()==null?null:booking.getPayment().getStatus())
                 .arena(booking.getArena().getName())
                 .slot(booking.getSlot().getSlot())
                 .build();
@@ -164,8 +165,23 @@ public class BookingsService {
             throw new ResourceNotFoundException("Arena not found with id: "+arenaId);
         }
         List<Bookings> booking = bookingsRepository.findAllByArena_idAndActiveIndex(arenaId, true);
+        List<BookingsAdminResponse> bookingsAdminResponses =new ArrayList<>();
+        booking.stream().forEach(x->{
+            BookingsAdminResponse book=BookingsAdminResponse.builder()
+                    .bookingId(x.getId())
+                    .bookingDate(x.getDate())
+                    .slot(x.getSlot().getSlot())
+                    .arena(x.getArena().getName())
+                    .paymentStatus(x.getPayment()==null?null:x.getPayment().getStatus())
+                    .userEmail(x.getUser().getEmail())
+                    .userBranch(x.getUser().getBranch().getName())
+                    .userCourse(x.getUser().getCourse().getName())
+                    .userPhone(x.getUser().getPhone())
+                    .build();
+            bookingsAdminResponses.add(book);
+        });
         ApiResponse apiResponse= ApiResponse.builder()
-                .data(booking)
+                .data(bookingsAdminResponses)
                 .errors(new ArrayList<>())
                 .message(AppConstants.RETRIEVAL_SUCCESS)
                 .success(Boolean.TRUE)
