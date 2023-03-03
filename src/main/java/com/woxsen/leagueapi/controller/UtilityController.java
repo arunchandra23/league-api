@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.woxsen.leagueapi.utils.GenderTypes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -49,6 +50,15 @@ public class UtilityController {
         return new ResponseEntity<>( types, HttpStatus.OK);
 
     }
+    @GetMapping("/gender-types")
+    public ResponseEntity<Map> getGenderTypes(){
+        HashMap<String,String> types=new HashMap<>();
+        Arrays.asList(GenderTypes.values()).stream().forEach(x->{
+            types.put(x.name(), x.name());
+        });
+        return new ResponseEntity<>( types, HttpStatus.OK);
+
+    }
     @GetMapping("/availability/email")
     public Boolean checkEmailAvailability(@RequestParam(required = false) String email) {
         if (email == null) {
@@ -64,25 +74,7 @@ public class UtilityController {
         }
         return userService.isUserNameAvailability(userName);
     }
-//    @RequestMapping(method = RequestMethod.POST)
-//    @RequestMapping(
-//            value = "/red",
-//            method = RequestMethod.GET)
-//    public void redirectToTwitter(HttpServletResponse httpServletResponse) throws IOException {
-//        httpServletResponse.sendRedirect("https://twitter.com");
-//    }
-//    @PostMapping("/submitForm")
-//    public RedirectView submitForm(
-//                             RedirectAttributes redirectAttributes) {
-//        // Do some processing with the form data
-//    RedirectView redirectView=new RedirectView();
-//    redirectView.setUrl("https://twitter.com");
-//        // Add a message to the redirect attributes
-//        redirectAttributes.addFlashAttribute("message", "Form submitted successfully!");
-//
-//        // Redirect to a URL
-//        return redirectView;
-//    }
+
 
 
 

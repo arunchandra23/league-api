@@ -22,4 +22,6 @@ public interface BookingsRepository extends JpaRepository<Bookings, UUID> {
 	List<Bookings> findAllByActiveIndex(boolean b);
 
 	Bookings findByIdAndActiveIndex(UUID bookingId, boolean b);
+
+	List<Bookings> findAllByArena_idAndActiveIndex(UUID arenaId, boolean b);
 }

@@ -29,8 +29,8 @@ public class UserRequest {
     @Email(message = "Invalid email",regexp = "[a-z0-9._%+-]+@woxsen+\\.edu.in",
             flags = Pattern.Flag.CASE_INSENSITIVE)
     private String email;
-//    @NotNull(message = "In-valid gender")
-//    private GenderTypes gender;
+    @NotNull(message = "In-valid gender")
+    private String gender;
     @Pattern(regexp = "^\\s*(?:\\+?(\\d{1,3}))?[-. (]*(\\d{3})[-. )]*(\\d{3})[-. ]*(\\d{4})(?: *x(\\d+))?\\s*$")
     private String phone;
     @NotBlank(message = "In-valid email")

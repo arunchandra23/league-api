@@ -5,9 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import com.woxsen.leagueapi.exceptions.ResourceNotFoundException;
-import com.woxsen.leagueapi.payload.response.BookingConfirmResponse;
-import com.woxsen.leagueapi.payload.response.BookingDetailsResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -17,8 +14,10 @@ import com.woxsen.leagueapi.entity.Bookings;
 import com.woxsen.leagueapi.entity.Slots;
 import com.woxsen.leagueapi.entity.User;
 import com.woxsen.leagueapi.exceptions.BadRequestException;
+import com.woxsen.leagueapi.exceptions.ResourceNotFoundException;
 import com.woxsen.leagueapi.payload.ApiResponse;
 import com.woxsen.leagueapi.payload.request.BookingRequest;
+import com.woxsen.leagueapi.payload.response.BookingDetailsResponse;
 import com.woxsen.leagueapi.payload.response.SlotsResponse;
 import com.woxsen.leagueapi.repository.*;
 import com.woxsen.leagueapi.utils.AppConstants;
@@ -101,14 +100,14 @@ public class BookingsService {
     }
     public ApiResponse getBookingsByUser(UUID userId){
         List<Bookings> bookingsByUser = bookingsRepository.getBookingsByUser(userId);
-        List<BookingConfirmResponse> responses=new ArrayList<>();
+        List<BookingDetailsResponse> responses=new ArrayList<>();
         bookingsByUser.stream().forEach(booking->{
-            BookingConfirmResponse b=BookingConfirmResponse.builder()
-                    .status(booking.getBookingStatus().toString())
+            BookingDetailsResponse b=BookingDetailsResponse.builder()
+                    .paymentStatus(booking.getBookingStatus().toString())
                     .bookingId(booking.getId())
                     .arena(booking.getArena().getName())
                     .slot(booking.getSlot().getSlot())
-                    .date(booking.getDate().toString())
+                    .bookingDate(booking.getDate().toString())
                     .build();
             responses.add(b);
         });
@@ -132,9 +131,41 @@ public class BookingsService {
                 .bookingDate(booking.getDate().toString())
                 .paymentStatus(booking.getPayment().getStatus())
                 .arena(booking.getArena().getName())
+                .slot(booking.getSlot().getSlot())
                 .build();
         ApiResponse apiResponse= ApiResponse.builder()
                 .data(response)
+                .errors(new ArrayList<>())
+                .message(AppConstants.RETRIEVAL_SUCCESS)
+                .success(Boolean.TRUE)
+                .status(HttpStatus.OK)
+                .build();
+        return apiResponse;
+
+    }
+
+    public ApiResponse getBookingAllBooking() {
+        List<Bookings> booking =  bookingsRepository.findAllByActiveIndex(true);
+
+
+        ApiResponse apiResponse= ApiResponse.builder()
+                .data(booking)
+                .errors(new ArrayList<>())
+                .message(AppConstants.RETRIEVAL_SUCCESS)
+                .success(Boolean.TRUE)
+                .status(HttpStatus.OK)
+                .build();
+        return apiResponse;
+    }
+
+    public ApiResponse getAllBookingsByArena(UUID arenaId) {
+        Arena arena = arenaRepository.findByIdAndActiveIndex(arenaId, true);
+        if(arena==null){
+            throw new ResourceNotFoundException("Arena not found with id: "+arenaId);
+        }
+        List<Bookings> booking = bookingsRepository.findAllByArena_idAndActiveIndex(arenaId, true);
+        ApiResponse apiResponse= ApiResponse.builder()
+                .data(booking)
                 .errors(new ArrayList<>())
                 .message(AppConstants.RETRIEVAL_SUCCESS)
                 .success(Boolean.TRUE)

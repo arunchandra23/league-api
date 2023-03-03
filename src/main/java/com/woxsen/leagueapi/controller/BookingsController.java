@@ -35,9 +35,15 @@ public class BookingsController {
         return new ResponseEntity<>(apiResponse,apiResponse.getStatus());
 
     }
-    @GetMapping("/bookings")
-    public ResponseEntity<ApiResponse> getBookingDetailsByBookingId(@RequestParam UUID bookingId){
+    @GetMapping("/bookings/{bookingId}")
+    public ResponseEntity<ApiResponse> getBookingDetailsByBookingId(@PathVariable UUID bookingId){
         ApiResponse apiResponse = bookingsService.getBookingDetailsByBookingId(bookingId);
+        return new ResponseEntity<>(apiResponse,apiResponse.getStatus());
+
+    }
+    @GetMapping("/arenas/{arenaId}/bookings")
+    public ResponseEntity<ApiResponse> getAllBookingsByArena(@PathVariable UUID arenaId){
+        ApiResponse apiResponse = bookingsService.getAllBookingsByArena(arenaId);
         return new ResponseEntity<>(apiResponse,apiResponse.getStatus());
 
     }

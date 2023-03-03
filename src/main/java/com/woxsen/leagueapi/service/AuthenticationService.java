@@ -3,6 +3,7 @@ package com.woxsen.leagueapi.service;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import com.woxsen.leagueapi.utils.GenderTypes;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -83,6 +84,7 @@ public class AuthenticationService {
             throw new ResourceNotFoundException("Course not found with Id: " + userRequest.getCourseId());
         });
         User user = modelMapper.map(userRequest, User.class);
+        user.setGender(GenderTypes.valueOf(userRequest.getGender()));
         user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
         user.setCourse(course);
         user.setBranch(course.getBranch());
