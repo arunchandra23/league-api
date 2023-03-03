@@ -1,42 +1,63 @@
 package com.woxsen.leagueapi.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.woxsen.leagueapi.utils.Status;
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.io.Serializable;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.util.UUID;
+
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 
-import java.sql.Timestamp;
-import java.util.UUID;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.woxsen.leagueapi.utils.BookingStatus;
+import com.woxsen.leagueapi.utils.Status;
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity
-public class Bookings {
+
+public class Bookings implements Serializable {
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "uuid2")
     private UUID id;
 
+    @Column(name = "booking_date")
+    private LocalDate date;
+
+    @Enumerated(EnumType.STRING)
+    private BookingStatus bookingStatus;
+    @JsonIgnore
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user;
+
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "arena_id")
     private Arena arena;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "slot_id")
     private Slots slot;
 
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "payment_id")
     private Payment payment;
+//    @Enumerated(EnumType.STRING)
+//    private PaymentStatus paymentStatus;
     @Enumerated(EnumType.STRING)
     private Status status;
     private boolean activeIndex;

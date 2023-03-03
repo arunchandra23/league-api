@@ -1,18 +1,22 @@
 package com.woxsen.leagueapi.entity;
 
+import java.io.Serializable;
+import java.sql.Timestamp;
+import java.util.UUID;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.GenericGenerator;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.woxsen.leagueapi.utils.RoleName;
 import com.woxsen.leagueapi.utils.Status;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.GenericGenerator;
-
-import java.sql.Timestamp;
-import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -20,7 +24,8 @@ import java.util.UUID;
 @Builder
 @Entity
 @Table(name = "roles_tbl")
-public class Role {
+public class Role implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     public Role(RoleName name){
         this.name=name;
@@ -35,6 +40,7 @@ public class Role {
     @Enumerated(EnumType.STRING)
     private Status status;
     private boolean activeIndex;
+    @JsonIgnore
     @CreationTimestamp
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm")
     @Column(name = "created_date")

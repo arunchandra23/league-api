@@ -1,17 +1,17 @@
 package com.woxsen.leagueapi.security;
 
-import com.woxsen.leagueapi.entity.User;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import java.util.Collection;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
 
-import java.util.Collection;
-import java.util.UUID;
-import java.util.stream.Collectors;
+import com.woxsen.leagueapi.entity.User;
+
+import lombok.NoArgsConstructor;
 
 
 @NoArgsConstructor

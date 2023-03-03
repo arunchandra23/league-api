@@ -1,21 +1,25 @@
 package com.woxsen.leagueapi.controller;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
+import com.woxsen.leagueapi.utils.GenderTypes;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.woxsen.leagueapi.exceptions.BadRequestException;
-import com.woxsen.leagueapi.payload.ApiResponse;
-import com.woxsen.leagueapi.payload.request.CourseRequest;
 import com.woxsen.leagueapi.service.BranchService;
 import com.woxsen.leagueapi.service.CourseService;
 import com.woxsen.leagueapi.service.UserService;
 import com.woxsen.leagueapi.utils.AppConstants;
 import com.woxsen.leagueapi.utils.ArenaTypes;
 import com.woxsen.leagueapi.utils.CourseTypes;
-import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.*;
 
 @RestController
 @RequestMapping(AppConstants.BASE_URL+"/util")
@@ -46,6 +50,15 @@ public class UtilityController {
         return new ResponseEntity<>( types, HttpStatus.OK);
 
     }
+    @GetMapping("/gender-types")
+    public ResponseEntity<Map> getGenderTypes(){
+        HashMap<String,String> types=new HashMap<>();
+        Arrays.asList(GenderTypes.values()).stream().forEach(x->{
+            types.put(x.name(), x.name());
+        });
+        return new ResponseEntity<>( types, HttpStatus.OK);
+
+    }
     @GetMapping("/availability/email")
     public Boolean checkEmailAvailability(@RequestParam(required = false) String email) {
         if (email == null) {
@@ -61,6 +74,7 @@ public class UtilityController {
         }
         return userService.isUserNameAvailability(userName);
     }
+
 
 
 

@@ -1,13 +1,12 @@
 package com.woxsen.leagueapi.repository;
 
-import com.woxsen.leagueapi.entity.Arena;
-import com.woxsen.leagueapi.entity.Slots;
+import java.util.List;
+import java.util.UUID;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import com.woxsen.leagueapi.entity.Arena;
 
 @Repository
 public interface ArenaRepository extends JpaRepository<Arena, UUID> {
