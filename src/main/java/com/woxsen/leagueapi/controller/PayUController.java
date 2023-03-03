@@ -50,8 +50,8 @@ public class PayUController {
         hashString = hashString.replace("txnid", txnId);
         hashString = hashString.replace("amount", String.valueOf(amount));
         hashString = hashString.replace("productinfo", "slot-booking");
-        hashString = hashString.replace("firstname", "Ashish");
-        hashString = hashString.replace("email", "test@gmail.com");
+        hashString = hashString.replace("firstname", user.getFirstName());
+        hashString = hashString.replace("email", user.getEmail());
 
         log.info(hashString);
 
