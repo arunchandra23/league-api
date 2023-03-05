@@ -21,7 +21,7 @@ import com.woxsen.leagueapi.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
-@RequestMapping("/payu")
+@RequestMapping(AppConstants.BASE_URL+"/payu")
 @Slf4j
 public class PayUController {
 	private final UserRepository userRepository;
@@ -59,7 +59,7 @@ public class PayUController {
 		return hexString.toString();
 	}
 
-	@GetMapping("/users/{userId}/arenas/{arenaId}/slot/{slotId}/day/{day}/redirect")
+	@GetMapping("/users/{userId}/arenas/{arenaId}/slots/{slotId}/day/{day}/get-payu-button")
     public ModelAndView getPdfView(@PathVariable UUID userId,@PathVariable UUID arenaId,@PathVariable UUID slotId,@PathVariable String day) throws IOException {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("payu");
