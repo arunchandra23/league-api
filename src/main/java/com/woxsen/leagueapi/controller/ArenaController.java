@@ -35,6 +35,14 @@ public class ArenaController {
         return new ResponseEntity<>(apiResponse,apiResponse.getStatus());
 
     }
+
+    @PutMapping("/{arenaId}/under-maintenance")
+    public ResponseEntity<ApiResponse> markUnderMaintenance(@PathVariable UUID arenaId){
+        ApiResponse apiResponse = arenaService.markUnderMaintenance(arenaId);
+        return new ResponseEntity<>(apiResponse,apiResponse.getStatus());
+
+    }
+
     @PostMapping("{arenaId}/slots/{slotId}")
     public ResponseEntity<ApiResponse> addSlotToArena(@PathVariable UUID arenaId,@PathVariable UUID slotId){
         ApiResponse apiResponse = arenaService.addSlotToArena(arenaId,slotId);

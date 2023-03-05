@@ -181,4 +181,13 @@ public class ArenaService {
 				.message(AppConstants.RETRIEVAL_SUCCESS).success(Boolean.TRUE).status(HttpStatus.OK).build();
 		return apiResponse;
 	}
+
+    public ApiResponse markUnderMaintenance(UUID arenaId) {
+		Arena arena = arenaRepository.findByIdAndActiveIndex(arenaId, true);
+		arena.setUnderMaintainence(!arena.isUnderMaintainence());
+		Arena save = arenaRepository.save(arena);
+		ApiResponse apiResponse = ApiResponse.builder().data(new ArrayList<>()).errors(new ArrayList<>())
+				.message(save.isUnderMaintainence()?"Marked arena as under-maintenance":"Removed arena from under-maintenance").success(Boolean.TRUE).status(HttpStatus.CREATED).build();
+		return apiResponse;
+	}
 }
