@@ -40,5 +40,8 @@ public class UserRequest {
     private String graduationYear;
     @NotNull
     private UUID courseId;
-
+    @NotNull
+    private UUID SecurityQuestionId;
+    @NotBlank(message = "In-valid answer")
+    private String securityAnswer;
 }

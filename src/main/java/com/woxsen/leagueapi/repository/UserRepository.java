@@ -14,4 +14,5 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 
     User findByIdAndActiveIndex(UUID userId, boolean b);
 
+    User findByEmailAndActiveIndex(String email, boolean b);
 }

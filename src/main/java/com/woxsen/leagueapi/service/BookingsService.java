@@ -57,7 +57,7 @@ public class BookingsService {
         if(!slotsRepository.existsByIdAndActiveIndex(bookingRequest.getSlotId(),true)){
             throw new BadRequestException("Slot with id: "+bookingRequest.getSlotId()+" does not exist");
         }
-        List<SlotsResponse> availableSlots = ArenaService.getAvailableSlots(bookingRequest.getArenaId(), arenaRepository, bookingsRepository,getDate(day));
+        List<SlotsResponse> availableSlots = ArenaService.getAvailableSlots(bookingRequest.getArenaId(), arenaRepository, bookingsRepository, slotsRepository, getDate(day));
         availableSlots.stream().forEach(slot->{
             if(slot.getId().toString().equals(bookingRequest.getSlotId().toString())){
                 if(!slot.isAvailable()){

@@ -5,12 +5,12 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.UUID;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.woxsen.leagueapi.utils.GenderTypes;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.woxsen.leagueapi.utils.GenderTypes;
 import com.woxsen.leagueapi.utils.Status;
 
 import jakarta.persistence.*;
@@ -66,6 +66,11 @@ public class User implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private List<Role> roles;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "question_id")
+    private SecurityQuestions question;
+    private String securityAnswer;
 
     @Enumerated(EnumType.STRING)
     private Status status;

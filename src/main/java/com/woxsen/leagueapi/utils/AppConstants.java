@@ -7,6 +7,8 @@ public class AppConstants {
     public static final String LOGIN_SUCCESS = "Authorized successfully";
     public static final String LOGIN_FAIL = "Authorization failed";
     public static final String SIGNUP_SUCCESS = "Signed up successfully";
+    public static final String PASSWORD_RESET_SUCCESS = "Password reset successful!";
+    public static final String PASSWORD_RESET_FAILED = "Password reset failed!";
     public static final String SIGNUP_FAIL = "Signup failed";
     public static final String RETRIEVAL_SUCCESS = "Data retrieval successful";
     public static final String RETRIEVAL_FAIL = "Data retrieval failed";

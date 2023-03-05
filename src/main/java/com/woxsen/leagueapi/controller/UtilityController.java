@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.woxsen.leagueapi.payload.ApiResponse;
+import com.woxsen.leagueapi.service.SecurityQuestionsService;
 import com.woxsen.leagueapi.utils.GenderTypes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,6 +33,8 @@ public class UtilityController {
     private CourseService courseService;
     @Autowired
     private UserService userService;
+ @Autowired
+    private SecurityQuestionsService securityQuestionsService;
 
     @GetMapping("/course-types")
     public ResponseEntity<Map> getCoursesTypes(){
@@ -73,6 +77,12 @@ public class UtilityController {
             throw new BadRequestException("Mention the query parameter userName");
         }
         return userService.isUserNameAvailability(userName);
+    }
+    @GetMapping("/security/questions")
+    public ResponseEntity<ApiResponse> getSecurityQuestions(){
+        ApiResponse apiResponse=securityQuestionsService.getAllQuestions();
+        return new ResponseEntity<>(apiResponse,apiResponse.getStatus());
+
     }
 
 

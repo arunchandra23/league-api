@@ -1,11 +1,18 @@
 package com.woxsen.leagueapi.service;
 
+import java.sql.Struct;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.UUID;
 
+import com.woxsen.leagueapi.entity.SecurityQuestions;
+import com.woxsen.leagueapi.exceptions.BadRequestException;
+import com.woxsen.leagueapi.payload.request.PasswordResetRequest;
+import com.woxsen.leagueapi.repository.SecurityQuestionsRepository;
 import com.woxsen.leagueapi.utils.GenderTypes;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -35,6 +42,8 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 public class AuthenticationService {
+    @Autowired
+    private SecurityQuestionsRepository securityQuestionsRepository;
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -83,7 +92,10 @@ public class AuthenticationService {
         Course course = courseRepository.findById(userRequest.getCourseId()).orElseThrow(() -> {
             throw new ResourceNotFoundException("Course not found with Id: " + userRequest.getCourseId());
         });
+        SecurityQuestions securityQuestion = securityQuestionsRepository.findByIdAndActiveIndex(userRequest.getSecurityQuestionId(), true);
         User user = modelMapper.map(userRequest, User.class);
+        user.setQuestion(securityQuestion);
+        user.setSecurityAnswer(userRequest.getSecurityAnswer().toLowerCase());
         user.setGender(GenderTypes.valueOf(userRequest.getGender()));
         user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
         user.setCourse(course);
@@ -107,4 +119,37 @@ public class AuthenticationService {
     }
 
 
+    public ApiResponse getSecurityQuestionByUser(String  email) {
+//        User user=userRepository.findByIdAndActiveIndex(userId,true);
+        User user=userRepository.findByEmailAndActiveIndex(email, true);
+        if (user==null){
+            throw new ResourceNotFoundException("User not found with email: "+email);
+        }
+        ApiResponse apiResponse = ApiResponse.builder().data(user.getQuestion()).errors(new ArrayList<>())
+                .message(AppConstants.RETRIEVAL_SUCCESS).success(Boolean.TRUE).status(HttpStatus.OK).build();
+        return apiResponse;
+    }
+
+    public ApiResponse resetPassword(PasswordResetRequest passwordResetRequest) {
+        User user=userRepository.findByEmailAndActiveIndex(passwordResetRequest.getEmail(), true);
+        if (user==null){
+            throw new ResourceNotFoundException("User not found with email: "+passwordResetRequest.getEmail());
+        } 
+        if(user.getQuestion().getId().equals(passwordResetRequest.getSecurityQuestionId())){
+            if(user.getSecurityAnswer().equals(passwordResetRequest.getSecurityAnswer().toLowerCase())){
+                user.setPassword(passwordEncoder.encode(passwordResetRequest.getNewPassword()));
+                userRepository.save(user);
+                return ApiResponse.builder()
+                        .data(new ArrayList<>())
+                        .status(HttpStatus.OK)
+                        .errors(new ArrayList<>())
+                        .message(AppConstants.PASSWORD_RESET_SUCCESS)
+                        .build();
+            }
+            throw new BadRequestException("Wrong security answer!");
+        }else{
+            throw new BadRequestException("Question id provided do not match the user's question id");
+        }
+
+    }
 }
