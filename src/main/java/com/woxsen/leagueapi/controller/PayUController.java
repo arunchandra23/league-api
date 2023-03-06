@@ -29,8 +29,8 @@ public class PayUController {
 	private String salt;
 	@Value("${payu.key}")
 	private String key;
-	@Value("${payu.REDIRECT_BASE_URL}")
-	private String REDIRECT_BASE_URL;
+	@Value("${payu.FORM_URL}")
+	private String FORM_URL;
 	@Value("${app.DOMAIN}")
 	private String DOMAIN;
 
@@ -64,16 +64,11 @@ public class PayUController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("payu");
 		User user=userRepository.findByIdAndActiveIndex(userId,true);
-//        RestTemplate temp=new RestTemplate();
-//        HttpHeaders httpHeaders=new HttpHeaders();
-//        httpHeaders.add("Content-Type", "application/json");
-//        HttpEntity<String> httpEntity = new HttpEntity<>(httpHeaders);
-//
-//        ResponseEntity<Map> entity = temp.exchange("http://localhost:8080/payu/generate-hash?amount=1&userId=57f03cbb-0181-4e29-aad0-ab7040f63e98", HttpMethod.POST, httpEntity, Map.class);
 		Double amount=1.0;
         Map map = generateHash(amount,userId);
 
         modelAndView.addObject("key",key );
+        modelAndView.addObject("formUrl",FORM_URL );
         modelAndView.addObject("txnId",map.get("txnId") );
         modelAndView.addObject("amount",amount );
         modelAndView.addObject("pInfo","slot-booking" );

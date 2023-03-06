@@ -3,7 +3,7 @@
 
 
 <!--<embed th:src="${doc}" type="">-->
-<form action='https://test.payu.in/_payment' method='post'>
+<form th:action="${formUrl}" method='post'>
     <input type="hidden" name="key" th:value="${key}" />
     <input type="hidden" name="txnid" th:value="${txnId}" />
     <input type="hidden" name="productinfo" th:value="${pInfo}" />
@@ -15,7 +15,7 @@
     <input type="hidden" name="furl" th:value="${furl}" />
     <input type="hidden" name="phone" th:value="${phone}" />
     <input type="hidden" name="hash" th:value="${hash}" />
-    <input type="submit" id="payu-btn" className='booking-btn col-md-12' value="Proceed to Pay" />
+    <input type="submit" id="payu-btn" value="Proceed to Pay" />
 </form>
 
 </html>
