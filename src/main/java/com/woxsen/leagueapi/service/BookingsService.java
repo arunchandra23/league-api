@@ -72,7 +72,6 @@ public class BookingsService {
                 .arena(arena)
                 .slot(slot)
                 .user(user)
-                .bookingStatus(BookingStatus.PENDING)
                 .date(getDate(day))
                 .activeIndex(Boolean.TRUE)
                 .status(Status.ACTIVE)
@@ -100,15 +99,19 @@ public class BookingsService {
         return apiResponse;
     }
     public ApiResponse getBookingsByUser(UUID userId){
-        List<Bookings> bookingsByUser = bookingsRepository.getBookingsByUser(userId);
+
+        List<Bookings> bookingsByUser =bookingsRepository.findAllByUser_id(userId);
+//        List<Bookings> bookingsByUser = bookingsRepository.getBookingsByUser(userId);
         List<BookingDetailsResponse> responses=new ArrayList<>();
         bookingsByUser.stream().forEach(booking->{
             BookingDetailsResponse b=BookingDetailsResponse.builder()
-                    .paymentStatus(booking.getBookingStatus().toString())
                     .bookingId(booking.getId())
+                    .paymentStatus(booking.getPayment()==null?null:booking.getPayment().getStatus())
                     .arena(booking.getArena().getName())
                     .slot(booking.getSlot().getSlot())
                     .bookingDate(booking.getDate().toString())
+                    .extendable(booking.getSlot().isPaid())
+                    .extended(booking.getExtension()==null?null:booking.getExtension().getId().toString())
                     .build();
             responses.add(b);
         });
@@ -130,9 +133,10 @@ public class BookingsService {
         BookingDetailsResponse response=BookingDetailsResponse.builder()
                 .bookingId(booking.getId())
                 .bookingDate(booking.getDate().toString())
-                .paymentStatus(booking.getPayment()==null?null:booking.getPayment().getStatus())
+                .paymentStatus(booking.getPayment().getStatus())
                 .arena(booking.getArena().getName())
                 .slot(booking.getSlot().getSlot())
+                .extended(booking.getExtension()==null?null:booking.getExtension().getId().toString())
                 .build();
         ApiResponse apiResponse= ApiResponse.builder()
                 .data(response)

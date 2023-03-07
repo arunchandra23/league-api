@@ -18,4 +18,7 @@ public class BookingDetailsResponse {
     private String slot;
     private String paymentStatus;
 
+    private String extended;
+    private boolean extendable;
+
 }

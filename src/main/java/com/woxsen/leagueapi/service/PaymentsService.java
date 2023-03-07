@@ -2,7 +2,10 @@ package com.woxsen.leagueapi.service;
 
 import java.util.UUID;
 
+import com.woxsen.leagueapi.entity.Extension;
 import com.woxsen.leagueapi.utils.BookingStatus;
+import com.woxsen.leagueapi.utils.PaymentStatus;
+import com.woxsen.leagueapi.utils.Status;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +53,30 @@ public class PaymentsService {
 		Payment save = paymentRepository.save(payment);
 
 		return booking;
+
+	}
+
+	public Bookings addExtensionPayment(PaymentRequest paymentRequest, UUID bookingId) {
+		Bookings bookingToExtend=bookingsRepository.findByIdAndActiveIndex(bookingId,true);
+		User user = bookingToExtend.getUser();
+		Payment payment = modelMapper.map(paymentRequest, Payment.class);
+		payment.setUser(user);
+		payment.setActiveIndex(true);
+		if(paymentRequest.getStatus().equals("success")){
+			Extension extension= Extension.builder()
+					.activeIndex(true)
+					.status(Status.ACTIVE)
+					.payment(payment)
+					.build();
+
+			bookingToExtend.setExtension(extension);
+			Bookings save = bookingsRepository.save(bookingToExtend);
+			return save;
+
+		}
+		paymentRepository.save(payment);
+
+		return bookingToExtend;
 
 	}
 }

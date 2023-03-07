@@ -35,7 +35,7 @@ public class Payment implements Serializable {
     private User user;
 
     @JsonIgnore
-    @OneToOne(cascade = CascadeType.ALL,mappedBy = "payment")
+    @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL,mappedBy = "payment")
     private Bookings bookings;
 
     @Column(name = "mode")

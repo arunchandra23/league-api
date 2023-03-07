@@ -14,7 +14,7 @@ import com.woxsen.leagueapi.entity.Bookings;
 @Repository
 public interface BookingsRepository extends JpaRepository<Bookings, UUID> {
 
-	@Query(nativeQuery = true, value = "SELECT * FROM bookings WHERE arena_id=:arenaId AND booking_date=:date AND booking_status LIKE 'PENDING' OR booking_status LIKE 'CONFIRMED' ")
+	@Query(nativeQuery = true, value = "SELECT * FROM bookings WHERE arena_id=:arenaId AND booking_date=:date")
 	List<Bookings> getUnAvailableSlots(@Param("arenaId") UUID arenaId, @Param("date") LocalDate bookingDate);
 	@Query(nativeQuery = true, value = "SELECT * FROM bookings WHERE user_id=:userId AND active_index=1")
 	List<Bookings> getBookingsByUser(@Param("userId") UUID userId);
@@ -24,4 +24,6 @@ public interface BookingsRepository extends JpaRepository<Bookings, UUID> {
 	Bookings findByIdAndActiveIndex(UUID bookingId, boolean b);
 
 	List<Bookings> findAllByArena_idAndActiveIndex(UUID arenaId, boolean b);
+
+	List<Bookings> findAllByUser_id(UUID userId);
 }

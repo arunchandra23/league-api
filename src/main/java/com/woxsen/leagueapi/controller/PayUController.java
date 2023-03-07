@@ -7,6 +7,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import com.woxsen.leagueapi.entity.Bookings;
+import com.woxsen.leagueapi.exceptions.ResourceNotFoundException;
+import com.woxsen.leagueapi.repository.BookingsRepository;
 import com.woxsen.leagueapi.utils.AppConstants;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping(AppConstants.BASE_URL+"/payu")
 @Slf4j
 public class PayUController {
+	private final BookingsRepository bookingsRepository;
 	private final UserRepository userRepository;
 	@Value("${payu.salt}")
 	private String salt;
@@ -34,8 +38,10 @@ public class PayUController {
 	@Value("${app.DOMAIN}")
 	private String DOMAIN;
 
-	public PayUController(UserRepository userRepository) {
+	public PayUController(UserRepository userRepository,
+						  BookingsRepository bookingsRepository) {
 		this.userRepository = userRepository;
+		this.bookingsRepository = bookingsRepository;
 	}
 
 	public static String hashCal(String type, String str) {
@@ -60,7 +66,7 @@ public class PayUController {
 	}
 
 	@GetMapping("/users/{userId}/arenas/{arenaId}/slots/{slotId}/day/{day}/get-payu-button")
-    public ModelAndView getPdfView(@PathVariable UUID userId,@PathVariable UUID arenaId,@PathVariable UUID slotId,@PathVariable String day) throws IOException {
+    public ModelAndView getPaymentView(@PathVariable UUID userId,@PathVariable UUID arenaId,@PathVariable UUID slotId,@PathVariable String day) throws IOException {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("payu");
 		User user=userRepository.findByIdAndActiveIndex(userId,true);
@@ -84,8 +90,38 @@ public class PayUController {
         modelAndView.addObject("hash",map.get("hash") );
         return modelAndView;
     }
+	@GetMapping("/bookings/{bookingId}/extension/get-payu-button")
+    public ModelAndView getextensionView(@PathVariable UUID bookingId) throws IOException {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("payu");
+		Bookings booking = bookingsRepository.findByIdAndActiveIndex(bookingId, true);
+		if(booking==null){
+			throw new ResourceNotFoundException("Booking not found with id:"+bookingId);
+		}
+		if(booking.getExtension()!=null){
+			throw new ResourceNotFoundException("Booking with id: "+bookingId+" has a slot already been extended");
+		}
+		User user=booking.getUser();
+		Double amount=3500.0;
+        Map map = generateHash(amount,user.getId());
 
-	// @PostMapping("/generate-hash")
+        modelAndView.addObject("key",key );
+        modelAndView.addObject("formUrl",FORM_URL );
+        modelAndView.addObject("txnId",map.get("txnId") );
+        modelAndView.addObject("amount",amount );
+        modelAndView.addObject("pInfo","slot-booking" );
+        modelAndView.addObject("fName", user.getFirstName());
+        modelAndView.addObject("email",user.getEmail());
+        modelAndView.addObject("phone",user.getPhone());
+        modelAndView.addObject("lName", user.getLastName());
+		//add addPayment method where store payment details only and redirect to success page
+        modelAndView.addObject("surl", DOMAIN+AppConstants.BASE_URL+"/payments/bookings/"+bookingId+"/extension/redirect");
+        modelAndView.addObject("furl", DOMAIN+AppConstants.BASE_URL+"/payments/bookings/"+bookingId+"/extension/redirect");
+        modelAndView.addObject("hash",map.get("hash") );
+        return modelAndView;
+    }
+
+
 	public Map generateHash(Double amount, UUID userId) {
 		User user = userRepository.findByIdAndActiveIndex(userId, true);
 		Map<String, String> paymentDetail = new HashMap<>();
@@ -114,25 +150,3 @@ public class PayUController {
 	}
 
 }
-
-// In this example, the endpoint is /payu/generate-hash and it accepts the
-// following parameters:
-//
-// key: Your PayU Merchant Key
-// txnId: A unique transaction ID for the payment
-// amount: The amount of the payment
-// productInfo: A description of the product being purchased
-// firstName: The first name of the customer making the payment
-// email: The email address of the customer making the payment
-// phone: The phone number of the customer making the payment
-// surl (optional): The URL to redirect the customer to after a successful
-// payment
-// furl (optional): The URL to redirect the customer to after a failed payment
-// The salt is a secret key that is used to create the hash. You should replace
-// "YOUR_SALT_HERE" with your actual salt value.
-//
-// The hashCal method generates the hash using the SHA-512 algorithm. You can
-// modify this method to use a different algorithm if necessary.
-//
-// The endpoint returns a JSON response containing the hash and the other
-// parameters required by PayU Money

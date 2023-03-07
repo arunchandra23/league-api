@@ -39,6 +39,7 @@ public class Slots implements Serializable {
     private List<Arena> arenas;
     private boolean activeIndex;
     private boolean isPaid;
+    private String forWomenOn;
     @CreationTimestamp
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm")
     @Column(name = "created_date")

@@ -54,11 +54,25 @@ public class PaymentsController {
 		return redirectView;
 
 	}
-	// @GetMapping("/users/{userId}/bookings")
-	// public ResponseEntity<ApiResponse> getBookingsByUser(@PathVariable UUID
-	// userId){
-	// ApiResponse apiResponse = bookingsService.getBookingsByUser(userId);
-	// return new ResponseEntity<>(apiResponse,apiResponse.getStatus());
-	//
-	// }
+	@PostMapping(value = "/bookings/{bookingId}/extension/redirect",consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
+			produces = {
+					MediaType.APPLICATION_ATOM_XML_VALUE,
+					MediaType.APPLICATION_JSON_VALUE
+			})
+	public RedirectView addExtensionForBooking(@PathVariable UUID bookingId,
+								   @RequestParam Map<String,String> formRequest) {
+		PaymentRequest paymentRequest=modelMapper.map(formRequest,PaymentRequest.class);
+		Bookings booking = paymentsService.addExtensionPayment(paymentRequest,bookingId);
+		log.info(paymentRequest.toString());
+		RedirectView redirectView = new RedirectView();
+		if (paymentRequest.getStatus().equals("success")) {
+			redirectView.setUrl("http://localhost:3000/success?bookingId="+booking.getId());
+		} else {
+			redirectView.setUrl("http://localhost:3000/fail");
+		}
+//		redirectView.setUrl("http://localhost:3000/success");
+		return redirectView;
+
+	}
+
 }
