@@ -22,7 +22,6 @@ import com.woxsen.leagueapi.payload.response.BookingDetailsResponse;
 import com.woxsen.leagueapi.payload.response.SlotsResponse;
 import com.woxsen.leagueapi.repository.*;
 import com.woxsen.leagueapi.utils.AppConstants;
-import com.woxsen.leagueapi.utils.BookingStatus;
 import com.woxsen.leagueapi.utils.Status;
 
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +29,8 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 public class BookingsService {
+    @Autowired
+    private ArenaSlotsForGenderRepository arenaSlotsForGenderRepository;
     @Autowired
     private BranchRepository branchRepository;
     @Autowired
@@ -57,7 +58,7 @@ public class BookingsService {
         if(!slotsRepository.existsByIdAndActiveIndex(bookingRequest.getSlotId(),true)){
             throw new BadRequestException("Slot with id: "+bookingRequest.getSlotId()+" does not exist");
         }
-        List<SlotsResponse> availableSlots = ArenaService.getAvailableSlots(bookingRequest.getArenaId(), arenaRepository, bookingsRepository, slotsRepository, getDate(day));
+        List<SlotsResponse> availableSlots = ArenaService.getAvailableSlots(bookingRequest.getArenaId(), arenaRepository, bookingsRepository, slotsRepository, arenaSlotsForGenderRepository, getDate(day));
         availableSlots.stream().forEach(slot->{
             if(slot.getId().toString().equals(bookingRequest.getSlotId().toString())){
                 if(!slot.isAvailable()){
@@ -110,7 +111,7 @@ public class BookingsService {
                     .arena(booking.getArena().getName())
                     .slot(booking.getSlot().getSlot())
                     .bookingDate(booking.getDate().toString())
-                    .extendable(booking.getSlot().isPaid())
+                    .extendable(booking.getSlot().isPaid()&&!booking.getSlot().getSlot().equals("7PM - 11PM")&&LocalDate.now().isBefore(booking.getDate()))
                     .extended(booking.getExtension()==null?null:booking.getExtension().getId().toString())
                     .build();
             responses.add(b);
@@ -136,6 +137,7 @@ public class BookingsService {
                 .paymentStatus(booking.getPayment().getStatus())
                 .arena(booking.getArena().getName())
                 .slot(booking.getSlot().getSlot())
+                .extendable(booking.getSlot().isPaid()&&!booking.getSlot().getSlot().equals("7PM - 11PM"))
                 .extended(booking.getExtension()==null?null:booking.getExtension().getId().toString())
                 .build();
         ApiResponse apiResponse= ApiResponse.builder()

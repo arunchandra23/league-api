@@ -1,7 +1,9 @@
 package com.woxsen.leagueapi.controller;
 
+import java.util.Map;
 import java.util.UUID;
 
+import com.woxsen.leagueapi.payload.request.SlotToArenaRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -44,11 +46,12 @@ public class ArenaController {
     }
 
     @PostMapping("{arenaId}/slots/{slotId}")
-    public ResponseEntity<ApiResponse> addSlotToArena(@PathVariable UUID arenaId,@PathVariable UUID slotId){
-        ApiResponse apiResponse = arenaService.addSlotToArena(arenaId,slotId);
+    public ResponseEntity<ApiResponse> addSlotToArena(@RequestBody SlotToArenaRequest slotToArenaRequest, @PathVariable UUID arenaId, @PathVariable UUID slotId){
+        ApiResponse apiResponse = arenaService.addSlotToArena(arenaId,slotId,slotToArenaRequest);
         return new ResponseEntity<>(apiResponse,apiResponse.getStatus());
 
     }
+
     @GetMapping("{arenaId}/slots")
     public ResponseEntity<ApiResponse> getSlotsByArena(@PathVariable UUID arenaId,String day){
         ApiResponse apiResponse = arenaService.getSlotsByArena(arenaId,day);

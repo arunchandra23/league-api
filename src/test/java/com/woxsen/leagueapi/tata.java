@@ -58,10 +58,99 @@
 //        for(int i=0; i<arenas.size();i++){
 //            System.out.println("Arena"+arenas.get(i));
 //            for(int j=0; j<slots.size();j++){
+//                    String body = null;
+//                if(slots.get(j).equals("35333815-01a5-4980-8c99-85f56bad992b")||slots.get(j).equals("3e8981fe-a1c8-498d-8e37-3911e66f840a")){
+//                    if(arenas.get(i).equals("288d880a-dd8b-4942-aba1-9af17f7c4bde")){
+//                        body= """
+//                                {
+//                                  "daysForWomen": [
+//                                    1,4,7
+//                                  ]
+//                                }
+//                                """;
+//                    }
+//                    if(arenas.get(i).equals("013aad7b-8ec4-4711-bd39-66bda5be6442")){
+//                        body= """
+//                                {
+//                                  "daysForWomen": [
+//                                    1,4,7
+//                                  ]
+//                                }
+//                                """;
+//                    }
+//                    if(arenas.get(i).equals("4ae5f7e5-b58c-46ac-b65e-52fc2dd81799")){
+//                        body= """
+//                                {
+//                                  "daysForWomen": [
+//                                    1,5
+//                                  ]
+//                                }
+//                                """;
+//                    }
+//                    if(arenas.get(i).equals("0ab260e0-54be-4243-bd7c-913fdfa3f234")){
+//                        body= """
+//                                {
+//                                  "daysForWomen": [
+//                                    2,4,6
+//                                  ]
+//                                }
+//                                """;
+//                    }
+//                    if(arenas.get(i).equals("55011bb2-6437-4376-aa52-74dd430a57af")){
+//                        body= """
+//                                {
+//                                  "daysForWomen": [
+//                                    2,5
+//                                  ]
+//                                }
+//                                """;
+//                    }if(arenas.get(i).equals("1082201a-c10d-4e91-8497-32f5b4ca3810")){
+//                        body= """
+//                                {
+//                                  "daysForWomen": [
+//                                    2,7
+//                                  ]
+//                                }
+//                                """;
+//                    }if(arenas.get(i).equals("ff2b7bb4-3775-4bb7-b7f6-327db99d1f49")){
+//                        body= """
+//                                {
+//                                  "daysForWomen": [
+//                                    3,5
+//                                  ]
+//                                }
+//                                """;
+//                    }if(arenas.get(i).equals("3677c5fc-1313-4851-ab0a-1c2799562146")){
+//                        body= """
+//                                {
+//                                  "daysForWomen": [
+//                                    3,6
+//                                  ]
+//                                }
+//                                """;
+//                    }if(arenas.get(i).equals("bd5717a2-2860-426d-ac95-b0321a066685")){
+//                        body= """
+//                                {
+//                                  "daysForWomen": [
+//                                    3,6
+//                                  ]
+//                                }
+//                                """;
+//                    }
+//                }
+//                else{
+//                    body= """
+//                                {
+//                                  "daysForWomen": [
+//                                    0
+//                                  ]
+//                                }
+//                                """;
+//                }
 //
 //                HttpHeaders httpHeaders = new HttpHeaders();
 //                httpHeaders.add("Content-Type", "application/json");
-//                HttpEntity<String> httpEntity = new HttpEntity<>( httpHeaders);
+//                HttpEntity<String> httpEntity = new HttpEntity<>( body,httpHeaders);
 //                ResponseEntity<String> responseEntity = template.exchange("/api/v1/arenas/"+arenas.get(i)+"/slots/"+slots.get(j), HttpMethod.POST, httpEntity, String.class);
 //
 //

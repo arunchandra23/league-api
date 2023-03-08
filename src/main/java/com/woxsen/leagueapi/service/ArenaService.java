@@ -2,9 +2,14 @@ package com.woxsen.leagueapi.service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
+import com.woxsen.leagueapi.entity.ArenaSlotsForGender;
+import com.woxsen.leagueapi.payload.request.SlotToArenaRequest;
+import com.woxsen.leagueapi.repository.ArenaSlotsForGenderRepository;
+import com.woxsen.leagueapi.utils.GenderTypes;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,6 +35,8 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 public class ArenaService {
+	@Autowired
+	private ArenaSlotsForGenderRepository arenaSlotsForGenderRepository;
 	public static final String ARENA_NOT_FOUND = "Arena not found with id: ";
 	@Autowired
 	private ArenaRepository arenaRepository;
@@ -40,10 +47,10 @@ public class ArenaService {
 	private ModelMapper modelMapper = new ModelMapper();
 
 	public static List<SlotsResponse> getAvailableSlots(UUID arenaId, ArenaRepository arenaRepository,
-			BookingsRepository bookingsRepository, SlotsRepository slotsRepository, LocalDate date) {
+														BookingsRepository bookingsRepository, SlotsRepository slotsRepository, ArenaSlotsForGenderRepository arenaSlotsForGenderRepository, LocalDate date) {
 
 		ModelMapper modelMapper = new ModelMapper();
-		try {
+//		try {
 			List<Slots> allSlots = arenaRepository.findByIdAndActiveIndex(arenaId, true).getSlots();
 			List<SlotsResponse> slotsResponses = new ArrayList<>();
 			List<Slots> unAvailableSlots = new ArrayList<>();
@@ -57,77 +64,97 @@ public class ArenaService {
 					unAvailableSlots.add(x.getSlot());
 				}
 			});
+
 			Arena currentArena = arenaRepository.findByIdAndActiveIndex(arenaId, true);
 			allSlots.stream().forEach(x -> {
 				SlotsResponse slotsResponse = modelMapper.map(x, SlotsResponse.class);
 
-				switch (LocalDate.now().getDayOfWeek()) {
-					case MONDAY -> {
-						if ((x.getSlot().toUpperCase().trim().equals("7AM - 8AM".trim())
-								|| x.getSlot().toUpperCase().trim().equals("7PM - 8PM".trim()))
-								&& (currentArena.getName().toUpperCase().equals("VOLLEYBALL COURT 1".trim())
-										|| currentArena.getName().toUpperCase().equals("LAWN TENNIS COURT 1".trim())
-										|| currentArena.getName().toUpperCase().equals("CROQUET".trim()))) {
-							slotsResponse.setForWomen(true);
+//				switch (LocalDate.now().getDayOfWeek()) {
+//					case MONDAY -> {
+//						if ((x.getSlot().toUpperCase().trim().equals("7AM - 8AM".trim())
+//								|| x.getSlot().toUpperCase().trim().equals("7PM - 8PM".trim()))
+//								&& (currentArena.getName().toUpperCase().equals("VOLLEYBALL COURT 1".trim())
+//										|| currentArena.getName().toUpperCase().equals("LAWN TENNIS COURT 1".trim())
+//										|| currentArena.getName().toUpperCase().equals("CROQUET".trim()))) {
+//							slotsResponse.setForWomen(true);
+//						}
+//					}
+//					case TUESDAY -> {
+//						if ((x.getSlot().toUpperCase().trim().equals("7AM - 8AM".trim())
+//								|| x.getSlot().toUpperCase().trim().equals("7PM - 8PM".trim()))
+//								&& (currentArena.getName().toUpperCase().equals("BOX CRICKET".trim())
+//										|| currentArena.getName().toUpperCase().equals("FOOTBALL PITCH 1".trim())
+//										|| currentArena.getName().toUpperCase().equals("KABADDI".trim()))) {
+//							slotsResponse.setForWomen(true);
+//						}
+//					}
+//					case WEDNESDAY -> {
+//						log.info(x.getSlot().toUpperCase().trim().trim() + ">>"
+//								+ x.getSlot().toUpperCase().trim().equals("7AM - 8AM".trim()));
+//						if ((x.getSlot().toUpperCase().trim().equals("7AM - 8AM".trim())
+//								|| x.getSlot().toUpperCase().trim().equals("7PM - 8PM".trim()))
+//								&& (currentArena.getName().toUpperCase().equals("BASKETBALL".trim())
+//										|| currentArena.getName().toUpperCase().equals("SAND VOLLEYBALL".trim())
+//										|| currentArena.getName().toUpperCase().equals("GOLF".trim()))) {
+//							slotsResponse.setForWomen(true);
+//						}
+//					}
+//					case THURSDAY -> {
+//						if ((x.getSlot().toUpperCase().trim().equals("7AM - 8AM".trim())
+//								|| x.getSlot().toUpperCase().trim().equals("7PM - 8PM".trim()))
+//								&& (currentArena.getName().toUpperCase().equals("BOX CRICKET".trim())
+//										|| currentArena.getName().toUpperCase().equals("LAWN TENNIS COURT 1".trim())
+//										|| currentArena.getName().toUpperCase().equals("VOLLEYBALL COURT 1".trim()))) {
+//							slotsResponse.setForWomen(true);
+//						}
+//					}
+//					case FRIDAY -> {
+//						if ((x.getSlot().toUpperCase().trim().equals("7AM - 8AM".trim())
+//								|| x.getSlot().toUpperCase().trim().equals("7PM - 8PM".trim()))
+//								&& (currentArena.getName().toUpperCase().equals("BASKETBALL".trim())
+//										|| currentArena.getName().toUpperCase().equals("CROQUET".trim())
+//										|| currentArena.getName().toUpperCase().equals("FOOTBALL PITCH 1".trim()))) {
+//							slotsResponse.setForWomen(true);
+//						}
+//					}
+//					case SATURDAY -> {
+//						if ((x.getSlot().toUpperCase().trim().equals("7AM - 8AM".trim())
+//								|| x.getSlot().toUpperCase().trim().equals("7PM - 8PM".trim()))
+//								&& (currentArena.getName().toUpperCase().equals("BOX CRICKET".trim())
+//										|| currentArena.getName().toUpperCase().equals("SAND VOLLEYBALL".trim())
+//										|| currentArena.getName().toUpperCase().equals("GOLF".trim()))) {
+//							slotsResponse.setForWomen(true);
+//						}
+//					}
+//					case SUNDAY -> {
+//						if ((x.getSlot().toUpperCase().trim().equals("7AM - 8AM".trim())
+//								|| x.getSlot().toUpperCase().trim().equals("7PM - 8PM".trim()))
+//								&& (currentArena.getName().toUpperCase().equals("VOLLEYBALL COURT 1".trim())
+//										|| currentArena.getName().toUpperCase().equals("LAWN TENNIS COURT 1".trim())
+//										|| currentArena.getName().toUpperCase().equals("KABADDI".trim()))) {
+//							slotsResponse.setForWomen(true);
+//						}
+//					}
+//				}
+				List<ArenaSlotsForGender> arenaSlotsForGenders = arenaSlotsForGenderRepository.findAllByArena_id(arenaId);
+				int today = date.getDayOfWeek().getValue();
+				arenaSlotsForGenders.stream().forEach(asg->{
+					if(asg.getSlot().equals(x)){
+						String[] string = asg.getDaysForGender().replaceAll("\\[", "")
+								.replaceAll("]", "")
+								.split(",");
+
+						int[] arr = new int[string.length];
+						for (int i = 0; i < string.length; i++) {
+							arr[i] = Integer.valueOf(string[i].trim());
 						}
+						Arrays.stream(arr).forEach(day->{
+							if(day==today){
+								slotsResponse.setForWomen(true);
+							}
+						});
 					}
-					case TUESDAY -> {
-						if ((x.getSlot().toUpperCase().trim().equals("7AM - 8AM".trim())
-								|| x.getSlot().toUpperCase().trim().equals("7PM - 8PM".trim()))
-								&& (currentArena.getName().toUpperCase().equals("BOX CRICKET".trim())
-										|| currentArena.getName().toUpperCase().equals("FOOTBALL PITCH 1".trim())
-										|| currentArena.getName().toUpperCase().equals("KABADDI".trim()))) {
-							slotsResponse.setForWomen(true);
-						}
-					}
-					case WEDNESDAY -> {
-						log.info(x.getSlot().toUpperCase().trim().trim() + ">>"
-								+ x.getSlot().toUpperCase().trim().equals("7AM - 8AM".trim()));
-						if ((x.getSlot().toUpperCase().trim().equals("7AM - 8AM".trim())
-								|| x.getSlot().toUpperCase().trim().equals("7PM - 8PM".trim()))
-								&& (currentArena.getName().toUpperCase().equals("BASKETBALL".trim())
-										|| currentArena.getName().toUpperCase().equals("SAND VOLLEYBALL".trim())
-										|| currentArena.getName().toUpperCase().equals("GOLF".trim()))) {
-							slotsResponse.setForWomen(true);
-						}
-					}
-					case THURSDAY -> {
-						if ((x.getSlot().toUpperCase().trim().equals("7AM - 8AM".trim())
-								|| x.getSlot().toUpperCase().trim().equals("7PM - 8PM".trim()))
-								&& (currentArena.getName().toUpperCase().equals("BOX CRICKET".trim())
-										|| currentArena.getName().toUpperCase().equals("LAWN TENNIS COURT 1".trim())
-										|| currentArena.getName().toUpperCase().equals("VOLLEYBALL COURT 1".trim()))) {
-							slotsResponse.setForWomen(true);
-						}
-					}
-					case FRIDAY -> {
-						if ((x.getSlot().toUpperCase().trim().equals("7AM - 8AM".trim())
-								|| x.getSlot().toUpperCase().trim().equals("7PM - 8PM".trim()))
-								&& (currentArena.getName().toUpperCase().equals("BASKETBALL".trim())
-										|| currentArena.getName().toUpperCase().equals("CROQUET".trim())
-										|| currentArena.getName().toUpperCase().equals("FOOTBALL PITCH 1".trim()))) {
-							slotsResponse.setForWomen(true);
-						}
-					}
-					case SATURDAY -> {
-						if ((x.getSlot().toUpperCase().trim().equals("7AM - 8AM".trim())
-								|| x.getSlot().toUpperCase().trim().equals("7PM - 8PM".trim()))
-								&& (currentArena.getName().toUpperCase().equals("BOX CRICKET".trim())
-										|| currentArena.getName().toUpperCase().equals("SAND VOLLEYBALL".trim())
-										|| currentArena.getName().toUpperCase().equals("GOLF".trim()))) {
-							slotsResponse.setForWomen(true);
-						}
-					}
-					case SUNDAY -> {
-						if ((x.getSlot().toUpperCase().trim().equals("7AM - 8AM".trim())
-								|| x.getSlot().toUpperCase().trim().equals("7PM - 8PM".trim()))
-								&& (currentArena.getName().toUpperCase().equals("VOLLEYBALL COURT 1".trim())
-										|| currentArena.getName().toUpperCase().equals("LAWN TENNIS COURT 1".trim())
-										|| currentArena.getName().toUpperCase().equals("KABADDI".trim()))) {
-							slotsResponse.setForWomen(true);
-						}
-					}
-				}
+				});
 
 				if (unAvailableSlots.contains(x)) {
 					slotsResponse.setAvailable(false);
@@ -138,9 +165,9 @@ public class ArenaService {
 				slotsResponses.add(slotsResponse);
 			});
 			return slotsResponses;
-		} catch (Exception e) {
-			throw new ResourceNotFoundException(ARENA_NOT_FOUND + arenaId);
-		}
+//		} catch (Exception e) {
+//			throw new ResourceNotFoundException(ARENA_NOT_FOUND + arenaId);
+//		}
 	}
 
 	public ApiResponse addArena(ArenaRequest arenaRequest) {
@@ -161,12 +188,19 @@ public class ArenaService {
 		return apiResponse;
 	}
 
-	public ApiResponse addSlotToArena(UUID arenaId, UUID slotId) {
+	public ApiResponse addSlotToArena(UUID arenaId, UUID slotId, SlotToArenaRequest slotToArenaRequest) {
 		Arena arena = arenaRepository.findByIdAndActiveIndex(arenaId, true);
 		Slots slot = slotsRepository.findByIdAndActiveIndex(slotId, true);
 		if (arena.getSlots().contains(slot)) {
 			throw new BadRequestException("Slot with id: " + slotId + " already exists in arena with id: " + arenaId);
 		}
+		ArenaSlotsForGender asg=ArenaSlotsForGender.builder()
+				.daysForGender(slotToArenaRequest.getDaysForWomen().toString())
+				.gender(GenderTypes.FEMALE)
+				.slot(slot)
+				.arena(arena)
+				.build();
+		arenaSlotsForGenderRepository.save(asg);
 		arena.getSlots().add(slot);
 		Arena save = arenaRepository.save(arena);
 		ApiResponse apiResponse = ApiResponse.builder().data(save).errors(new ArrayList<>())
@@ -176,7 +210,7 @@ public class ArenaService {
 
 	public ApiResponse getSlotsByArena(UUID arenaId, String day) {
 		List<SlotsResponse> availableSlots = getAvailableSlots(arenaId, arenaRepository, bookingsRepository,
-				slotsRepository, BookingsService.getDate(day));
+				slotsRepository,arenaSlotsForGenderRepository, BookingsService.getDate(day));
 		ApiResponse apiResponse = ApiResponse.builder().data(availableSlots).errors(new ArrayList<>())
 				.message(AppConstants.RETRIEVAL_SUCCESS).success(Boolean.TRUE).status(HttpStatus.OK).build();
 		return apiResponse;
