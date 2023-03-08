@@ -1,6 +1,7 @@
 package com.woxsen.leagueapi.entity;
 
 import java.io.Serializable;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.UUID;
@@ -31,6 +32,7 @@ public class Slots implements Serializable {
     private UUID id;
 
     private String slot;
+    private Time startTime;
     @Enumerated(EnumType.STRING)
     private Status status;
 

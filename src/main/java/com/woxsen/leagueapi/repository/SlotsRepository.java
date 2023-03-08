@@ -16,4 +16,6 @@ public interface SlotsRepository extends JpaRepository<Slots, UUID> {
     boolean existsByIdAndActiveIndex(UUID slotId, boolean b);
 
     List<Slots> findAllByActiveIndexAndIsPaid(boolean b, boolean b1);
+
+    List<Slots> findByArenasIdAndActiveIndexOrderByStartTimeAsc(UUID arenaId, boolean b);
 }

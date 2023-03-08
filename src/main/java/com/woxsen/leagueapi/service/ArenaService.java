@@ -1,10 +1,8 @@
 package com.woxsen.leagueapi.service;
 
+import java.sql.Time;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import com.woxsen.leagueapi.entity.ArenaSlotsForGender;
 import com.woxsen.leagueapi.payload.request.SlotToArenaRequest;
@@ -51,7 +49,8 @@ public class ArenaService {
 
 		ModelMapper modelMapper = new ModelMapper();
 //		try {
-			List<Slots> allSlots = arenaRepository.findByIdAndActiveIndex(arenaId, true).getSlots();
+//			List<Slots> allSlots = arenaRepository.findByIdAndActiveIndexOrderBySlotsStartTimeDesc(arenaId, true).getSlots();
+			List<Slots> allSlots = slotsRepository.findByArenasIdAndActiveIndexOrderByStartTimeAsc(arenaId, true);
 			List<SlotsResponse> slotsResponses = new ArrayList<>();
 			List<Slots> unAvailableSlots = new ArrayList<>();
 			List<Bookings> unAvailableBookings = bookingsRepository.getUnAvailableSlots(arenaId, date);
@@ -156,15 +155,22 @@ public class ArenaService {
 					}
 				});
 
+				Date da=new Date();
 				if (unAvailableSlots.contains(x)) {
+
 					slotsResponse.setAvailable(false);
 				} else {
 					slotsResponse.setAvailable(true);
+						log.info(date.equals(LocalDate.now())+"<>"+x.getStartTime()+"<>"+new Time(da.getHours(),da.getMinutes(),da.getSeconds())+"<>"+x.getStartTime().before(new Time(da.getHours(),da.getMinutes(),da.getSeconds())));
+					if(date.equals(LocalDate.now()) &&new Time(da.getHours(),da.getMinutes(),da.getSeconds()).after(x.getStartTime())){
+						slotsResponse.setAvailable(false);
+					}
 				}
 
 				slotsResponses.add(slotsResponse);
 			});
 			return slotsResponses;
+
 //		} catch (Exception e) {
 //			throw new ResourceNotFoundException(ARENA_NOT_FOUND + arenaId);
 //		}

@@ -22,6 +22,7 @@ public class SlotsService {
     public ApiResponse addSlot(SlotRequest slotRequest) {
         Slots slot=Slots.builder()
                 .slot(slotRequest.getSlot())
+                .startTime(slotRequest.getStartTime())
                 .activeIndex(Boolean.TRUE)
                 .status(Status.ACTIVE)
                 .build();

@@ -7,6 +7,7 @@ import java.util.UUID;
 
 import com.woxsen.leagueapi.payload.response.BookingsAdminResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -101,7 +102,9 @@ public class BookingsService {
     }
     public ApiResponse getBookingsByUser(UUID userId){
 
-        List<Bookings> bookingsByUser =bookingsRepository.findAllByUser_id(userId);
+        Sort.Order order1 = new Sort.Order(Sort.Direction.DESC, "published");
+
+        List<Bookings> bookingsByUser =bookingsRepository.findAllByUser_idOrderByCreatedDateDesc(userId);
 //        List<Bookings> bookingsByUser = bookingsRepository.getBookingsByUser(userId);
         List<BookingDetailsResponse> responses=new ArrayList<>();
         bookingsByUser.stream().forEach(booking->{
@@ -111,7 +114,7 @@ public class BookingsService {
                     .arena(booking.getArena().getName())
                     .slot(booking.getSlot().getSlot())
                     .bookingDate(booking.getDate().toString())
-                    .extendable(booking.getSlot().isPaid()&&!booking.getSlot().getSlot().equals("7PM - 11PM")&&LocalDate.now().isBefore(booking.getDate()))
+                    .extendable(booking.getArena().getName().equals("Cricket")&&!booking.getSlot().getSlot().equals("7PM - 11PM")&&LocalDate.now().isBefore(booking.getDate()))
                     .extended(booking.getExtension()==null?null:booking.getExtension().getId().toString())
                     .build();
             responses.add(b);

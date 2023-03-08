@@ -13,6 +13,7 @@ public interface ArenaRepository extends JpaRepository<Arena, UUID> {
     List<Arena> findAllByActiveIndex(boolean b);
 
     List<Arena> findArenaSlotsById(UUID arenaId);
+    Arena findByIdAndActiveIndexOrderBySlotsStartTimeDesc(UUID arenaId, boolean b);
 
     Arena findByIdAndActiveIndex(UUID arenaId, boolean b);
 }
