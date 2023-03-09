@@ -114,7 +114,7 @@ public class BookingsService {
                     .arena(booking.getArena().getName())
                     .slot(booking.getSlot().getSlot())
                     .bookingDate(booking.getDate().toString())
-                    .extendable(booking.getArena().getName().equals("Cricket")&&!booking.getSlot().getSlot().equals("7PM - 11PM")&&LocalDate.now().isBefore(booking.getDate()))
+                    .extendable(booking.getArena().getName().equals("Cricket")&&!booking.getSlot().getSlot().equals("7PM - 11PM")&&LocalDate.now().isEqual(booking.getDate()))
                     .extended(booking.getExtension()==null?null:booking.getExtension().getId().toString())
                     .build();
             responses.add(b);

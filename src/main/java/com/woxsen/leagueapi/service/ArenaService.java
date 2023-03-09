@@ -161,8 +161,8 @@ public class ArenaService {
 					slotsResponse.setAvailable(false);
 				} else {
 					slotsResponse.setAvailable(true);
-						log.info(date.equals(LocalDate.now())+"<>"+x.getStartTime()+"<>"+new Time(da.getHours(),da.getMinutes(),da.getSeconds())+"<>"+x.getStartTime().before(new Time(da.getHours(),da.getMinutes(),da.getSeconds())));
-					if(date.equals(LocalDate.now()) &&new Time(da.getHours(),da.getMinutes(),da.getSeconds()).after(x.getStartTime())){
+						//Logic to slot expiry
+						if(date.equals(LocalDate.now()) &&new Time(da.getHours(),da.getMinutes(),da.getSeconds()).after(x.getStartTime())){
 						slotsResponse.setAvailable(false);
 					}
 				}
