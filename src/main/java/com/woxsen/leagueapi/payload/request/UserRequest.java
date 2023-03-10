@@ -35,8 +35,8 @@ public class UserRequest {
     private String phone;
     @NotBlank(message = "In-valid email")
     private String password;
-    @JsonProperty("graduationYear")
-    @NotNull(message = "In-valid graduation year")
+//    @JsonProperty("graduationYear")
+//    @NotNull(message = "In-valid graduation year")
     private String graduationYear;
     @NotNull
     private UUID courseId;
