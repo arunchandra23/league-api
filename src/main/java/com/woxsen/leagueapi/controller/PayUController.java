@@ -88,6 +88,8 @@ public class PayUController {
         modelAndView.addObject("surl", DOMAIN+AppConstants.BASE_URL+"/payments/users/"+userId+"/arenas/"+arenaId+"/slots/"+slotId+"/redirect?day="+day );
         modelAndView.addObject("furl", DOMAIN+AppConstants.BASE_URL+"/payments/users/"+userId+"/arenas/"+arenaId+"/slots/"+slotId+"/redirect?day="+day );
         modelAndView.addObject("hash",map.get("hash") );
+		modelAndView.addObject("btnId","payu-btn");
+
         return modelAndView;
     }
 	@GetMapping("/bookings/{bookingId}/extension/get-payu-button")
@@ -118,6 +120,7 @@ public class PayUController {
         modelAndView.addObject("surl", DOMAIN+AppConstants.BASE_URL+"/payments/bookings/"+bookingId+"/extension/redirect");
         modelAndView.addObject("furl", DOMAIN+AppConstants.BASE_URL+"/payments/bookings/"+bookingId+"/extension/redirect");
         modelAndView.addObject("hash",map.get("hash") );
+        modelAndView.addObject("btnId","payu-ext"  );
         return modelAndView;
     }
 

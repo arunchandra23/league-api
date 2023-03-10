@@ -15,7 +15,7 @@
     <input type="hidden" name="furl" th:value="${furl}" />
     <input type="hidden" name="phone" th:value="${phone}" />
     <input type="hidden" name="hash" th:value="${hash}" />
-    <input type="submit" id="payu-btn" value="Proceed to Pay" />
+    <input type="submit" th:id="${btnId}"value="Proceed to Pay" />
 </form>
 
 </html>
