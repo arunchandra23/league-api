@@ -4,9 +4,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.woxsen.leagueapi.payload.ApiResponse;
-import com.woxsen.leagueapi.service.SecurityQuestionsService;
-import com.woxsen.leagueapi.utils.GenderTypes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,19 +13,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.woxsen.leagueapi.exceptions.BadRequestException;
-import com.woxsen.leagueapi.service.BranchService;
+import com.woxsen.leagueapi.payload.ApiResponse;
 import com.woxsen.leagueapi.service.CourseService;
+import com.woxsen.leagueapi.service.SecurityQuestionsService;
 import com.woxsen.leagueapi.service.UserService;
 import com.woxsen.leagueapi.utils.AppConstants;
 import com.woxsen.leagueapi.utils.ArenaTypes;
 import com.woxsen.leagueapi.utils.CourseTypes;
+import com.woxsen.leagueapi.utils.GenderTypes;
 
 @RestController
 @RequestMapping(AppConstants.BASE_URL+"/util")
 public class UtilityController {
 
-    @Autowired
-    private BranchService branchService;
+
     @Autowired
     private CourseService courseService;
     @Autowired

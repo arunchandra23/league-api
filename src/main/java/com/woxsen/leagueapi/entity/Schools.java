@@ -5,6 +5,7 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -31,8 +32,11 @@ public class Schools implements Serializable {
 
     private String name;
 
+//    @OneToMany(mappedBy = "school")
+//    private List<Branch> branches;
+    @JsonIgnore
     @OneToMany(mappedBy = "school")
-    private List<Branch> branches;
+    private List<Course> courses;
     @Enumerated(EnumType.STRING)
     private Status status;
     private boolean activeIndex;

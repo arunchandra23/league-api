@@ -4,28 +4,27 @@ import java.sql.Time;
 import java.time.LocalDate;
 import java.util.*;
 
-import com.woxsen.leagueapi.entity.ArenaSlotsForGender;
-import com.woxsen.leagueapi.payload.request.SlotToArenaRequest;
-import com.woxsen.leagueapi.repository.ArenaSlotsForGenderRepository;
-import com.woxsen.leagueapi.utils.GenderTypes;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.woxsen.leagueapi.entity.Arena;
+import com.woxsen.leagueapi.entity.ArenaSlotsForGender;
 import com.woxsen.leagueapi.entity.Bookings;
 import com.woxsen.leagueapi.entity.Slots;
 import com.woxsen.leagueapi.exceptions.BadRequestException;
-import com.woxsen.leagueapi.exceptions.ResourceNotFoundException;
 import com.woxsen.leagueapi.payload.ApiResponse;
 import com.woxsen.leagueapi.payload.request.ArenaRequest;
+import com.woxsen.leagueapi.payload.request.SlotToArenaRequest;
 import com.woxsen.leagueapi.payload.response.SlotsResponse;
 import com.woxsen.leagueapi.repository.ArenaRepository;
+import com.woxsen.leagueapi.repository.ArenaSlotsForGenderRepository;
 import com.woxsen.leagueapi.repository.BookingsRepository;
 import com.woxsen.leagueapi.repository.SlotsRepository;
 import com.woxsen.leagueapi.utils.AppConstants;
 import com.woxsen.leagueapi.utils.ArenaTypes;
+import com.woxsen.leagueapi.utils.GenderTypes;
 import com.woxsen.leagueapi.utils.Status;
 
 import lombok.extern.slf4j.Slf4j;

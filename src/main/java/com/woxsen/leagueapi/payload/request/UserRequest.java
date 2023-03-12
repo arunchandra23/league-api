@@ -2,9 +2,6 @@ package com.woxsen.leagueapi.payload.request;
 
 import java.util.UUID;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import com.woxsen.leagueapi.utils.GenderTypes;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

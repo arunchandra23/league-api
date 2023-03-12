@@ -3,9 +3,6 @@ package com.woxsen.leagueapi.service;
 import java.util.ArrayList;
 import java.util.UUID;
 
-import com.woxsen.leagueapi.payload.response.UserProfile;
-import com.woxsen.leagueapi.utils.AppConstants;
-import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Modifying;
@@ -17,8 +14,12 @@ import com.woxsen.leagueapi.entity.User;
 import com.woxsen.leagueapi.exceptions.BadRequestException;
 import com.woxsen.leagueapi.exceptions.ResourceNotFoundException;
 import com.woxsen.leagueapi.payload.ApiResponse;
+import com.woxsen.leagueapi.payload.response.UserProfile;
 import com.woxsen.leagueapi.repository.UserRepository;
+import com.woxsen.leagueapi.utils.AppConstants;
 import com.woxsen.leagueapi.utils.RoleName;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j

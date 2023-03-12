@@ -1,12 +1,8 @@
 package com.woxsen.leagueapi.payload.response;
 
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.UUID;
 
-import com.woxsen.leagueapi.entity.Branch;
-import com.woxsen.leagueapi.entity.Course;
-import com.woxsen.leagueapi.entity.Payment;
 import com.woxsen.leagueapi.entity.Role;
 import com.woxsen.leagueapi.utils.Status;
 

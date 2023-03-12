@@ -2,16 +2,12 @@ package com.woxsen.leagueapi.service;
 
 import java.util.UUID;
 
-import com.woxsen.leagueapi.entity.Extension;
-import com.woxsen.leagueapi.utils.BookingStatus;
-import com.woxsen.leagueapi.utils.PaymentStatus;
-import com.woxsen.leagueapi.utils.Status;
-import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.woxsen.leagueapi.entity.Bookings;
+import com.woxsen.leagueapi.entity.Extension;
 import com.woxsen.leagueapi.entity.Payment;
 import com.woxsen.leagueapi.entity.User;
 import com.woxsen.leagueapi.payload.ApiResponse;
@@ -20,6 +16,9 @@ import com.woxsen.leagueapi.payload.request.PaymentRequest;
 import com.woxsen.leagueapi.repository.BookingsRepository;
 import com.woxsen.leagueapi.repository.PaymentRepository;
 import com.woxsen.leagueapi.repository.UserRepository;
+import com.woxsen.leagueapi.utils.Status;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j

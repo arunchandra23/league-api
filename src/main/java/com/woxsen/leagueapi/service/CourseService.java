@@ -8,13 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import com.woxsen.leagueapi.entity.Branch;
 import com.woxsen.leagueapi.entity.Course;
+import com.woxsen.leagueapi.entity.Schools;
 import com.woxsen.leagueapi.exceptions.ResourceNotFoundException;
 import com.woxsen.leagueapi.payload.ApiResponse;
 import com.woxsen.leagueapi.payload.request.CourseRequest;
-import com.woxsen.leagueapi.repository.BranchRepository;
 import com.woxsen.leagueapi.repository.CourseRepository;
+import com.woxsen.leagueapi.repository.SchoolsRepository;
 import com.woxsen.leagueapi.utils.AppConstants;
 import com.woxsen.leagueapi.utils.CourseTypes;
 import com.woxsen.leagueapi.utils.Status;
@@ -23,18 +23,19 @@ import com.woxsen.leagueapi.utils.Status;
 public class CourseService {
     @Autowired
     private CourseRepository courseRepository;
-    @Autowired
-    private BranchRepository branchRepository;
 
-    public ApiResponse addCourse(UUID branchId, CourseRequest courseRequest) {
-        Branch branch = branchRepository.findById(branchId).orElseThrow(() -> {
-            throw new ResourceNotFoundException("Not found branch with Id: " + branchId);
-        });
+    @Autowired
+    private SchoolsRepository schoolsRepository;
+
+    public ApiResponse addCourse(UUID schoolId, CourseRequest courseRequest) {
+        Schools school = schoolsRepository.findByIdAndActiveIndex(schoolId, true);
+        if(school==null){
+            throw new ResourceNotFoundException("Not found branch with Id: " + schoolId);
+        };
         Course course=Course.builder()
                 .name(courseRequest.getName())
-//                .graduationYear(courseRequest.getGraduationYear())
                 .type(CourseTypes.valueOf(courseRequest.getCourseType()))
-                .branch(branch)
+                .school(school)
                 .activeIndex(Boolean.TRUE)
                 .status(Status.ACTIVE)
                 .build();
@@ -50,8 +51,8 @@ public class CourseService {
 
     }
 
-    public ApiResponse getCoursesByBranch(UUID branchId) {
-        List<Course> courses = courseRepository.findByBranch_id(branchId);
+    public ApiResponse getCoursesBySchool(UUID getCoursesBySchool) {
+        List<Course> courses = courseRepository.findBySchool_id(getCoursesBySchool);
         ApiResponse apiResponse= ApiResponse.builder()
                 .data(courses)
                 .errors(new ArrayList<>())

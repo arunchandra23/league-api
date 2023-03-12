@@ -3,7 +3,6 @@ package com.woxsen.leagueapi.payload.response;
 import java.time.LocalDate;
 import java.util.UUID;
 
-import com.woxsen.leagueapi.entity.Slots;
 import com.woxsen.leagueapi.utils.BookingStatus;
 import com.woxsen.leagueapi.utils.Status;
 

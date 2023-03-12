@@ -1,18 +1,12 @@
 package com.woxsen.leagueapi.controller;
 
-import java.util.List;
-
-import com.woxsen.leagueapi.payload.ApiResponse;
-import com.woxsen.leagueapi.payload.request.SchoolRequest;
-import com.woxsen.leagueapi.repository.SchoolsRepository;
-import com.woxsen.leagueapi.service.SchoolsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.woxsen.leagueapi.entity.Role;
-import com.woxsen.leagueapi.service.RoleService;
+import com.woxsen.leagueapi.payload.ApiResponse;
+import com.woxsen.leagueapi.payload.request.SchoolRequest;
+import com.woxsen.leagueapi.service.SchoolsService;
 import com.woxsen.leagueapi.utils.AppConstants;
 
 

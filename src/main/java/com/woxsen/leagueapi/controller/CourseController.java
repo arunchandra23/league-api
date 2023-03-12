@@ -8,30 +8,29 @@ import org.springframework.web.bind.annotation.*;
 
 import com.woxsen.leagueapi.payload.ApiResponse;
 import com.woxsen.leagueapi.payload.request.CourseRequest;
-import com.woxsen.leagueapi.service.BranchService;
 import com.woxsen.leagueapi.service.CourseService;
 import com.woxsen.leagueapi.utils.AppConstants;
 
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping(AppConstants.BASE_URL+"/branches")
+@RequestMapping(AppConstants.BASE_URL+"/schools")
 public class CourseController {
 
-    @Autowired
-    private BranchService branchService;
+//    @Autowired
+//    private BranchService branchService;
     @Autowired
     private CourseService courseService;
 
-    @PostMapping("/{branchId}/courses")
-    public ResponseEntity<ApiResponse> addCourse(@PathVariable UUID branchId, @Valid @RequestBody CourseRequest courseRequest){
-        ApiResponse apiResponse = courseService.addCourse(branchId, courseRequest);
+    @PostMapping("/{schoolId}/courses")
+    public ResponseEntity<ApiResponse> addCourse(@PathVariable UUID schoolId, @Valid @RequestBody CourseRequest courseRequest){
+        ApiResponse apiResponse = courseService.addCourse(schoolId, courseRequest);
         return new ResponseEntity<>(apiResponse,apiResponse.getStatus());
 
     }
-    @GetMapping("/{branchId}/courses")
-    public ResponseEntity<ApiResponse> getCoursesByBranch(@PathVariable UUID branchId){
-        ApiResponse apiResponse = courseService.getCoursesByBranch(branchId);
+    @GetMapping("/{schoolId}/courses")
+    public ResponseEntity<ApiResponse> getCoursesBySchool(@PathVariable UUID schoolId){
+        ApiResponse apiResponse = courseService.getCoursesBySchool(schoolId);
         return new ResponseEntity<>(apiResponse,apiResponse.getStatus());
 
     }

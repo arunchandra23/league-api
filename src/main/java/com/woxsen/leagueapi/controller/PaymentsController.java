@@ -3,24 +3,19 @@ package com.woxsen.leagueapi.controller;
 import java.util.Map;
 import java.util.UUID;
 
-import com.woxsen.leagueapi.entity.Bookings;
-import com.woxsen.leagueapi.entity.Payment;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
+import com.woxsen.leagueapi.entity.Bookings;
 import com.woxsen.leagueapi.payload.request.PaymentRequest;
 import com.woxsen.leagueapi.service.PaymentsService;
 import com.woxsen.leagueapi.service.SlotsService;
 import com.woxsen.leagueapi.utils.AppConstants;
 
-import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping(AppConstants.BASE_URL + "/payments")

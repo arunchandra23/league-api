@@ -1,15 +1,15 @@
 package com.woxsen.leagueapi.payload.response;
 
-import com.woxsen.leagueapi.entity.Payment;
+import java.util.List;
+import java.util.UUID;
+
 import com.woxsen.leagueapi.entity.Role;
 import com.woxsen.leagueapi.utils.Status;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
-import java.util.UUID;
 
 
 @Data

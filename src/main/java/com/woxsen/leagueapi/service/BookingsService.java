@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import com.woxsen.leagueapi.payload.response.BookingsAdminResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
@@ -20,6 +19,7 @@ import com.woxsen.leagueapi.exceptions.ResourceNotFoundException;
 import com.woxsen.leagueapi.payload.ApiResponse;
 import com.woxsen.leagueapi.payload.request.BookingRequest;
 import com.woxsen.leagueapi.payload.response.BookingDetailsResponse;
+import com.woxsen.leagueapi.payload.response.BookingsAdminResponse;
 import com.woxsen.leagueapi.payload.response.SlotsResponse;
 import com.woxsen.leagueapi.repository.*;
 import com.woxsen.leagueapi.utils.AppConstants;
@@ -32,8 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 public class BookingsService {
     @Autowired
     private ArenaSlotsForGenderRepository arenaSlotsForGenderRepository;
-    @Autowired
-    private BranchRepository branchRepository;
+
     @Autowired
     private BookingsRepository bookingsRepository;
     @Autowired
@@ -183,7 +182,7 @@ public class BookingsService {
                     .arena(x.getArena().getName())
                     .paymentStatus(x.getPayment()==null?null:x.getPayment().getStatus())
                     .userEmail(x.getUser().getEmail())
-                    .userBranch(x.getUser().getBranch().getName())
+                    .userSchool(x.getUser().getSchool().getName())
                     .userCourse(x.getUser().getCourse().getName())
                     .userPhone(x.getUser().getPhone())
                     .build();

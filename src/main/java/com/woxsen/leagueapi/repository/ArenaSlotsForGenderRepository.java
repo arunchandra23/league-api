@@ -1,11 +1,11 @@
 package com.woxsen.leagueapi.repository;
 
-import com.woxsen.leagueapi.entity.ArenaSlotsForGender;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-
 import java.util.List;
 import java.util.UUID;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.woxsen.leagueapi.entity.ArenaSlotsForGender;
 
 public interface ArenaSlotsForGenderRepository extends JpaRepository<ArenaSlotsForGender, UUID> {
 

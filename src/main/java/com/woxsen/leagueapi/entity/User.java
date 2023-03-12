@@ -51,9 +51,12 @@ public class User implements Serializable {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "course_id")
     private Course course;
+//    @ManyToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "branch_id")
+//    private Branch branch;
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "branch_id")
-    private Branch branch;
+    @JoinColumn(name = "school_id")
+    private Schools school;
 
     @JsonIgnore
     @OneToMany(mappedBy = "user")

@@ -30,15 +30,17 @@ public class Course implements Serializable {
     private UUID id;
 
     private String name;
-//    @Column(name = "grad_year")
-//    private int graduationYear;
     @Enumerated(EnumType.STRING)
     @Column(name = "course_type")
     private CourseTypes type;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "branch_id")
-    private Branch branch;
+//    @ManyToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "branch_id")
+//    private Branch branch;
+
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "school_id")
+	private Schools school;
 
     @Enumerated(EnumType.STRING)
     private Status status;

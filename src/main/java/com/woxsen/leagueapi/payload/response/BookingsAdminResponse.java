@@ -21,7 +21,7 @@ public class BookingsAdminResponse {
     private String paymentStatus;
 
     private String userEmail;
-    private String userBranch;
+    private String userSchool;
     private String userCourse;
     private String userPhone;
 

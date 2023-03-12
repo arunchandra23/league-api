@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 import com.woxsen.leagueapi.entity.Course;
 @Repository
 public interface CourseRepository extends JpaRepository<Course, UUID> {
-    List<Course> findByBranch_id(UUID branchId);
+    List<Course> findBySchool_id(UUID schoolId);
 }
