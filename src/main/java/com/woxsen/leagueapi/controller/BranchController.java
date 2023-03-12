@@ -12,23 +12,25 @@ import com.woxsen.leagueapi.utils.AppConstants;
 
 import jakarta.validation.Valid;
 
+import java.util.UUID;
+
 @RestController
-@RequestMapping(AppConstants.BASE_URL+"/branches")
+@RequestMapping(AppConstants.BASE_URL)
 public class BranchController {
     @Autowired
     private AuthenticationService authenticationService;
     @Autowired
     private BranchService branchService;
 
-    @PostMapping
+    @PostMapping("/branches")
     public ResponseEntity<ApiResponse> addBranch(@Valid @RequestBody BranchRequest branchRequest){
         ApiResponse apiResponse = branchService.addBranch(branchRequest);
         return new ResponseEntity<>(apiResponse,apiResponse.getStatus());
 
     }
-    @GetMapping
-    public ResponseEntity<ApiResponse> getAllBranches(){
-        ApiResponse apiResponse=branchService.getAllBranches();
+    @GetMapping("/schools/{schoolId}/branches")
+    public ResponseEntity<ApiResponse> getAllBranchesBySchool(@PathVariable UUID schoolId){
+        ApiResponse apiResponse=branchService.getAllBranchesBySchool(schoolId);
         return new ResponseEntity<>(apiResponse,apiResponse.getStatus());
     }
 

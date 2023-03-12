@@ -120,7 +120,7 @@ public class PayUController {
         modelAndView.addObject("surl", DOMAIN+AppConstants.BASE_URL+"/payments/bookings/"+bookingId+"/extension/redirect");
         modelAndView.addObject("furl", DOMAIN+AppConstants.BASE_URL+"/payments/bookings/"+bookingId+"/extension/redirect");
         modelAndView.addObject("hash",map.get("hash") );
-        modelAndView.addObject("btnId","payu-ext"  );
+			modelAndView.addObject("btnId","payu-ext"  );
         return modelAndView;
     }
 

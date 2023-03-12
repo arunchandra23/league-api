@@ -10,4 +10,6 @@ import com.woxsen.leagueapi.entity.Branch;
 @Repository
 public interface BranchRepository extends JpaRepository<Branch, UUID> {
     List<Branch> findAllByActiveIndex(boolean b);
+
+    List<Branch> findAllBySchool_idAndActiveIndex(UUID schoolId, boolean b);
 }

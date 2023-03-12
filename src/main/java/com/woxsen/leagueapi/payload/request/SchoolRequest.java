@@ -1,26 +1,20 @@
 package com.woxsen.leagueapi.payload.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.UUID;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class BranchRequest {
-    @NotBlank(message = "In-valid branch name")
-    @JsonProperty("branchName")
-    private String name;
+public class SchoolRequest {
 
-    @NotNull(message = "In-valid school id")
-    private UUID schoolId;
+    @NotBlank(message = "In-valid school name")
+    @JsonProperty("schoolName")
+    private String name;
 
 }

@@ -2,9 +2,9 @@ package com.woxsen.leagueapi.entity;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.UUID;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Entity
-public class Branch implements Serializable {
+public class Schools implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(generator = "system-uuid")
@@ -31,10 +31,8 @@ public class Branch implements Serializable {
 
     private String name;
 
-    @JsonIgnore
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "school_id")
-    private Schools school;
+    @OneToMany(mappedBy = "school")
+    private List<Branch> branches;
     @Enumerated(EnumType.STRING)
     private Status status;
     private boolean activeIndex;
